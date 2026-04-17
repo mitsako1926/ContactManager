@@ -11,7 +11,8 @@ import java.util.Optional;
 import com.mitsako1926.contactManager.db.DatabaseConnection;
 import com.mitsako1926.contactManager.model.Contact;
 
-public class ContactDAO {
+
+public final class ContactDAO {
 
 	
 	public List<Contact> getAllContacts() {
