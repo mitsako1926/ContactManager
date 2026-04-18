@@ -10,6 +10,9 @@ public final class DatabaseConnection {
     private static final String USER = "contact_app_user";
     private static final String PASSWORD = "app_user@mitsik.com";
 
+    
+    private DatabaseConnection() {}
+    
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
