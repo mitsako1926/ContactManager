@@ -1,5 +1,6 @@
 package com.mitsako1926.contactManager.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
@@ -18,8 +19,10 @@ public final class ContactManagerFrame extends JFrame{
 		setResizable(false);
 		setTitle("Contact Manager");
 		setIconImage(imageIcon.getImage());
+		setLayout(new BorderLayout());
 		
-		add(new ContactManagerPanel());
+		add(new ContactManagerPanel(),BorderLayout.CENTER);
+		add(new ContactManagerTopPanel(),BorderLayout.NORTH);
 		
 		pack();
 		
