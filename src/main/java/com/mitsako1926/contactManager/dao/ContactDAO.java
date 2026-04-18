@@ -39,7 +39,7 @@ public final class ContactDAO {
 	
 	public void addContact(Contact contact) {
 		
-		String sql = "INSERT INTO contacts (first_name, last_name, phone, email, company, notes, favorite) VALUES (?, ?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO contacts (first_name, last_name, phone, email, company, notes, favorite, image_path) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
 	    try (Connection conn = DatabaseConnection.getConnection();
 	         PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -51,6 +51,7 @@ public final class ContactDAO {
 	        ps.setString(5, contact.getCompany());
 	        ps.setString(6, contact.getNotes());
 	        ps.setBoolean(7, contact.isFavorite());
+	        ps.setString(8, contact.getImagePath());
 
 	        ps.executeUpdate();
 
@@ -149,7 +150,7 @@ public final class ContactDAO {
     
     public void updateContact(Contact contact) {
     	
-        String sql = "UPDATE contacts SET first_name = ?, last_name = ?, phone = ?, email = ?, company = ?, notes = ?, favorite = ? WHERE id = ?";
+        String sql = "Update contacts set first_name = ?, last_name = ?, phone = ?, email = ?, company = ?, notes = ?, favorite = ? , image_path = ? WHERE id = ?";
     	
     	try (Connection conn = DatabaseConnection.getConnection();
    	         PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -161,7 +162,8 @@ public final class ContactDAO {
             ps.setString(5, contact.getCompany());
             ps.setString(6, contact.getNotes());
             ps.setBoolean(7, contact.isFavorite());
-            ps.setInt(8, contact.getId());
+            ps.setString(8, contact.getImagePath());
+            ps.setInt(9, contact.getId());
    	        
    	        ps.executeUpdate();
 
@@ -181,11 +183,12 @@ public final class ContactDAO {
     	
     	List<Contact> list = new ArrayList<Contact>();
 		
-    	String sql = "SELECT * FROM contacts WHERE " +
-                "LOWER(first_name) LIKE ? OR " +
-                "LOWER(last_name) LIKE ? OR " +
-                "phone LIKE ? OR " +
-                "LOWER(email) LIKE ?";
+    	String sql = "Select * from contacts where " +
+                "lower(first_name) like ? or " +
+                "lower(last_name) like ? or " +
+                "phone like ? or " +
+                "lower(email) like ? or " +
+                "lower(company) like ?";
     	
     	try (Connection conn = DatabaseConnection.getConnection();
 	         PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -196,6 +199,7 @@ public final class ContactDAO {
 	        ps.setString(2, searchPattern);
 	        ps.setString(3, searchPattern);
 	        ps.setString(4, searchPattern);
+	        ps.setString(5, searchPattern);
 
 	        try (ResultSet rs = ps.executeQuery()) {
 	            while (rs.next()) {
@@ -285,7 +289,7 @@ public final class ContactDAO {
 	    try (Connection conn = DatabaseConnection.getConnection();
 	         PreparedStatement ps = conn.prepareStatement(sql)) {
 
-	    	ps.setString(1, phone);
+	    	ps.setString(1, phone.trim());
 	    	
 	    	try(ResultSet rs = ps.executeQuery()){
 	    		return rs.next();
@@ -309,7 +313,7 @@ public final class ContactDAO {
 	    try (Connection conn = DatabaseConnection.getConnection();
 	         PreparedStatement ps = conn.prepareStatement(sql)) {
 
-	    	ps.setString(1, email);
+	    	ps.setString(1, email.trim());
 	    	
 	    	try(ResultSet rs = ps.executeQuery()){
 	    		return rs.next();
@@ -455,9 +459,14 @@ public final class ContactDAO {
             rs.getString("email"),
             rs.getString("company"),
             rs.getString("notes"),
-            rs.getBoolean("favorite")
+            rs.getBoolean("favorite"),
+            rs.getString("image_path")
         );
     }
+
+
+
+	
     
     
 }
