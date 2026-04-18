@@ -8,6 +8,6 @@ public final class ContactManagerPanel extends JPanel{
 
 	
 	public ContactManagerPanel() {
-		setPreferredSize(new Dimension(500,400));
+		setPreferredSize(new Dimension(600,500));
 	}
 }
