@@ -17,21 +17,27 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import com.mitsako1926.contactManager.service.ContactService;
+
 public final class ContactManagerSideBarPanel extends JPanel{
 
 	private final JButton allContactsButton, favoriteContactsButton, addContactButton;
 	
 	private final JPanel panelButtons = new JPanel(new GridLayout(3, 1, 10, 15));
 	
+	private final ContactService service;
 	
 	private JButton selectedButton;
 	
-	public ContactManagerSideBarPanel(){
+	public ContactManagerSideBarPanel(ContactService service){
 		setBackground(Color.decode("#F7F9FC"));
 		setPreferredSize(new Dimension(150,500));
 		setLayout(new BorderLayout());
 		setOpaque(true);
 		
+		this.service = service;
+		
+		service.setSideBarPanel(this);
 		
 		//GET THE IMAGES
 		ImageIcon iconAll = new ImageIcon(getClass().getResource("/images/icons/contacts.png"));
@@ -121,15 +127,15 @@ public final class ContactManagerSideBarPanel extends JPanel{
 	private void press(ActionEvent e) {
 	    if(e.getSource() == allContactsButton) {
 	        setSelectedButton(allContactsButton);
-	        System.out.println("ALL");
+	        service.loadAllContacts();
 	        
 	    } else if(e.getSource() == favoriteContactsButton) {
 	        setSelectedButton(favoriteContactsButton);
-	        System.out.println("FAV");
+	        service.loadFavoriteContacts();
 	        
 	    } else if(e.getSource() == addContactButton){
 	        setSelectedButton(addContactButton);
-	        System.out.println("ADD");
+	        service.addContact();
 	    }
 	}
 	
@@ -162,6 +168,8 @@ public final class ContactManagerSideBarPanel extends JPanel{
 	        )
 	    );
 	}
+	
+	
 	
 	
 	

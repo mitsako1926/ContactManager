@@ -6,6 +6,8 @@ import java.awt.GridLayout;
 
 import javax.swing.JPanel;
 
+import com.mitsako1926.contactManager.service.ContactService;
+
 public final class ContactManagerPanel extends JPanel{
 
 	
@@ -14,8 +16,18 @@ public final class ContactManagerPanel extends JPanel{
 		setLayout(new BorderLayout());
 		setOpaque(true);
 		
-		add(new ContactManagerSideBarPanel(), BorderLayout.WEST);
-		add(new ContactManagerCenterPanel(), BorderLayout.CENTER);
-		add(new ContactManagerRightPanel(), BorderLayout.EAST);
+		
+		ContactService service = new ContactService();
+		
+		ContactManagerSideBarPanel sideBarPanel = new ContactManagerSideBarPanel(service);
+		
+		ContactManagerCenterPanel centerPanel = new ContactManagerCenterPanel(service);
+		
+		ContactManagerRightPanel rightPanel = new ContactManagerRightPanel(service);
+		
+		
+		add(sideBarPanel, BorderLayout.WEST);
+		add(centerPanel, BorderLayout.CENTER);
+		add(rightPanel, BorderLayout.EAST);
 	}
 }

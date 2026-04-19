@@ -18,6 +18,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
 import com.mitsako1926.contactManager.model.Contact;
+import com.mitsako1926.contactManager.service.ContactService;
 
 
 public final class ContactManagerCenterPanel extends JPanel{
@@ -35,11 +36,15 @@ public final class ContactManagerCenterPanel extends JPanel{
 	
 	private final JComboBox<String> comboBox = new JComboBox<String>();
 	
-	ContactManagerCenterPanel(){
+	private final ContactService service;
+	
+	ContactManagerCenterPanel(ContactService service){
 		setPreferredSize(new Dimension(250,500));
 		setLayout(new BorderLayout());
 		setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, Color.decode("#D6DEE8")));
 
+		this.service = service;
+		service.setCenterPanel(this);
 		
 		//TOP PANEL
 		topPanel.setPreferredSize(new Dimension(300,40));
@@ -48,6 +53,23 @@ public final class ContactManagerCenterPanel extends JPanel{
 		comboBox.addItem("First Name");
 		comboBox.addItem("Last Name");
 		comboBox.addItem("Favorites First");
+		comboBox.setSelectedIndex(-1);
+		
+		comboBox.addActionListener(e -> {
+		    String selected = (String) comboBox.getSelectedItem();
+
+		    if (selected == null) return;
+
+		    if (selected.equals("First Name")) {
+		        service.sortByFirstName();
+		    } else if (selected.equals("Last Name")) {
+		        service.sortByLastName();
+		    } else if (selected.equals("Favorites First")) {
+		        service.sortFavoritesFirst();
+		    }
+
+		    refreshList();
+		});
 		
 		JPanel panelSortBy = new JPanel(new FlowLayout(1,5,8));
 		panelSortBy.add(labelSortBy);
@@ -69,23 +91,8 @@ public final class ContactManagerCenterPanel extends JPanel{
 		//CONTACTS PANEL
 		
 		model = new DefaultListModel<Contact>();
+		refreshList();
 		
-		
-		//CUSTOMIZE LIST
-		for (int i = 1; i <= 100; i++) {
-		    Contact c = new Contact(
-		        "Name" + i,
-		        "Surname" + i,
-		        "690000000" + i,
-		        "user" + i + "@mail.com",
-		        "Company" + i,
-		        "Notes " + i,
-		        false,
-		        null
-		    );
-		    model.addElement(c);
-		    
-		}
 		list = new JList<Contact>(model);
 		list.setCellRenderer(new ContactListRenderer());
 		list.setFont(new Font("Arial", Font.PLAIN, 18));
@@ -97,7 +104,11 @@ public final class ContactManagerCenterPanel extends JPanel{
 		    @Override
 		    public void mouseClicked(MouseEvent e) {
 		        if (e.getClickCount() == 2) {
-		        	System.out.println(0);
+		        	Contact selectedContact = list.getSelectedValue();
+
+		            if (selectedContact != null) {
+		                service.getDetails(selectedContact);
+		            }
 		        }
 		    }
 		});
@@ -108,6 +119,22 @@ public final class ContactManagerCenterPanel extends JPanel{
 		add(topPanel,BorderLayout.NORTH);
 		add(contactsPanel,BorderLayout.CENTER);
 	}
+	
+	
+	
+	private void refreshList() {
+	    model.clear();
+	    model.addAll(service.getContacts());
+	}
+	
+	
+	
+	public void callRefresh() {
+		refreshList();
+	}
+	
+	
+	
 	
 	
 }

@@ -6,7 +6,9 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -15,13 +17,20 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import com.mitsako1926.contactManager.model.Contact;
+
 public final class ContactManagerRightDetailsPanel extends JPanel{
 
 	
-	private final String[] labels = {" First Name : Panagiotis"," Last Name : Dimitrakopoulos"," Phone : 6965748392",
-								     " Email : mitsako2006@gmail.com"," Company : Razer"," Favorite : yes"," Notes :"
+	private final String[] labels = {" First Name : "," Last Name : "," Phone : ",
+								     " Email : "," Company : "," Favorite : "," Notes :"
 									};
 
+	private Contact contact;
+	
+	private final List<JLabel> labelList = new ArrayList<JLabel>();
+	
+	private final JTextArea notesArea;
 	
 	public ContactManagerRightDetailsPanel() {
 		setPreferredSize(new Dimension(250,500));
@@ -53,9 +62,9 @@ public final class ContactManagerRightDetailsPanel extends JPanel{
 		
 		//NOTES AREA 
 		
-		JTextArea notesArea = new JTextArea(5, 20);
+		notesArea = new JTextArea(5, 20);
 		notesArea.setLineWrap(true);
-		notesArea.setText("We have a meeting at 3 today after we get lunch and then we have sexyyyy");
+		notesArea.setText("");
 		notesArea.setWrapStyleWord(true);
 		notesArea.setFont(new Font("Arial", Font.BOLD, 12));
 		notesArea.setEditable(false);
@@ -82,8 +91,25 @@ public final class ContactManagerRightDetailsPanel extends JPanel{
 		if(label.getText().equals("Notes :")) {
 			label.setHorizontalAlignment(JLabel.CENTER);
 		}
+		
+		labelList.add(label);
 	}
 	
 	
+	
+	public void setContact(Contact contact) {
+		this.contact = contact;
+		
+		if(contact==null)return;
+		
+		labelList.get(0).setText(labels[0] + contact.getFirstName());
+		labelList.get(1).setText(labels[1] + contact.getLastName());
+		labelList.get(2).setText(labels[2] + contact.getPhone());
+		labelList.get(3).setText(labels[3] + contact.getEmail());
+		labelList.get(4).setText(labels[4] + contact.getCompany());
+		labelList.get(5).setText(labels[5] + contact.isFavorite());
+		notesArea.setText(contact.getNotes());
+		
+	}
 	
 }
