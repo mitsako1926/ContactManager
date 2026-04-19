@@ -7,6 +7,8 @@ import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
+import com.mitsako1926.contactManager.service.ContactService;
+
 public final class ContactManagerFrame extends JFrame{
 
 	
@@ -21,8 +23,10 @@ public final class ContactManagerFrame extends JFrame{
 		setIconImage(imageIcon.getImage());
 		setLayout(new BorderLayout());
 		
-		add(new ContactManagerPanel(),BorderLayout.CENTER);
-		add(new ContactManagerTopPanel(),BorderLayout.NORTH);
+		ContactService service = new ContactService();
+		
+		add(new ContactManagerPanel(service),BorderLayout.CENTER);
+		add(new ContactManagerTopPanel(service),BorderLayout.NORTH);
 		
 		pack();
 		

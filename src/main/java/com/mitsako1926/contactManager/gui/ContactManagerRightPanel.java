@@ -64,4 +64,14 @@ public final class ContactManagerRightPanel extends JPanel{
 	}
 	
 	
+	
+	public Contact getContact() {
+		
+		if(detailsPanel.getContact()==null) {
+			return null;
+		}
+		return detailsPanel.getContact();
+	}
+	
+	
 }

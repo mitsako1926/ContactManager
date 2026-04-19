@@ -11,14 +11,12 @@ import com.mitsako1926.contactManager.service.ContactService;
 public final class ContactManagerPanel extends JPanel{
 
 	
-	public ContactManagerPanel() {
+	public ContactManagerPanel(ContactService service) {
 		setPreferredSize(new Dimension(700,500));
 		setLayout(new BorderLayout());
 		setOpaque(true);
 		
-		
-		ContactService service = new ContactService();
-		
+				
 		ContactManagerSideBarPanel sideBarPanel = new ContactManagerSideBarPanel(service);
 		
 		ContactManagerCenterPanel centerPanel = new ContactManagerCenterPanel(service);

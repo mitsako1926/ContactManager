@@ -20,6 +20,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import com.mitsako1926.contactManager.service.ContactService;
+
 public final class ContactManagerTopPanel extends JPanel{
 
 	private final JPanel panelSearch = new JPanel();
@@ -36,11 +38,17 @@ public final class ContactManagerTopPanel extends JPanel{
 	
 	private final List<JButton> buttonsList = new ArrayList<JButton>();
 	
-	public ContactManagerTopPanel() {
+	private final ContactService service;
+	
+	
+	public ContactManagerTopPanel(ContactService service) {
 		
 		setPreferredSize(new Dimension(700,50));
 		setLayout(new BorderLayout());
 		setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.decode("#D6DEE8")));
+		
+		
+		this.service = service;
 		
 		//PANEL SEARCH
 		panelSearch.setBackground(Color.decode("#F7F9FC"));
@@ -113,11 +121,11 @@ public final class ContactManagerTopPanel extends JPanel{
 	private void press(ActionEvent e) {
 		
 		if(e.getSource()==buttonsList.get(0)) {
-			System.out.println(0);
+			System.out.println("edit");
 		}else if(e.getSource()==buttonsList.get(1)) {
-			System.out.println(1);
+			service.deleteContact();
 		}else if(e.getSource()==buttonsList.get(2)){
-			System.out.println(2);
+			service.setFavorite();
 		}
 	}
 	

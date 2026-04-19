@@ -27,7 +27,9 @@ public final class ContactManagerSideBarPanel extends JPanel{
 	
 	private final ContactService service;
 	
-	private JButton selectedButton;
+	private JButton selectedButton,previousButton;
+	
+
 	
 	public ContactManagerSideBarPanel(ContactService service){
 		setBackground(Color.decode("#F7F9FC"));
@@ -153,8 +155,10 @@ public final class ContactManagerSideBarPanel extends JPanel{
 	            BorderFactory.createEmptyBorder(0, 10, 0, 0)
 	        )
 	    );
-
+	    
+	    previousButton = selectedButton;
 	    selectedButton = button;
+	    
 	}
 	
 	
@@ -171,6 +175,19 @@ public final class ContactManagerSideBarPanel extends JPanel{
 	
 	
 	
+	public JButton getPreviousButton() {
+		return previousButton;
+	}
 	
 	
+	
+	public JButton getSelectedButton() {
+		return selectedButton;
+	}
+	
+	
+	
+	public void selectButton(JButton button) {
+		setSelectedButton(button);
+	}
 }

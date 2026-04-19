@@ -135,8 +135,8 @@ public final class ContactDAO {
     	try (Connection conn = DatabaseConnection.getConnection();
    	         PreparedStatement ps = conn.prepareStatement(sql)) {
 
-   	        ps.setInt(2, id);
-   	        ps.setBoolean(1, favorite);
+    		ps.setBoolean(1, favorite);
+    		ps.setInt(2, id);
    	        
    	        ps.executeUpdate();
 
@@ -236,13 +236,52 @@ public final class ContactDAO {
         
     }
     
-    
+    public List<Contact> getFavoriteContactsOrderByFirstName(){
+    	
+    	List<Contact> list = new ArrayList<Contact>();
+		
+		String sql = "Select * from contacts where favorite =1 order by first_name ASC";
+		
+	    try (Connection conn = DatabaseConnection.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql);
+	    	 ResultSet rs = ps.executeQuery()) {
+
+	        while(rs.next()) list.add(mapResultSetToContact(rs));
+	                
+	    } catch (SQLException e) {
+	        System.out.println("Error retrieving all contacts (first name order)");
+	    }
+	    	
+        return list;
+    }
     
     public List<Contact> getAllContactsOrderByLastName(){
     	
     	List<Contact> list = new ArrayList<Contact>();
 		
 		String sql = "Select * from contacts order by last_name ASC";
+		
+	    try (Connection conn = DatabaseConnection.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql);
+	    	 ResultSet rs = ps.executeQuery()) {
+
+	        while(rs.next()) list.add(mapResultSetToContact(rs));
+	                
+	    } catch (SQLException e) {
+	        System.out.println("Error retrieving all contacts (last name order)");
+	    }
+	    	
+        return list;
+        
+    }
+    
+    
+    
+    public List<Contact> getFavoriteContactsOrderByLastName(){
+    	
+    	List<Contact> list = new ArrayList<Contact>();
+		
+		String sql = "Select * from contacts where favorite =1 order by last_name ASC";
 		
 	    try (Connection conn = DatabaseConnection.getConnection();
 	         PreparedStatement ps = conn.prepareStatement(sql);

@@ -56,7 +56,7 @@ public final class ContactListRenderer extends JPanel implements ListCellRendere
         ImageIcon icon;
 
         if (contact.getImagePath() != null && !contact.getImagePath().isBlank()) {
-            icon = new ImageIcon(contact.getImagePath());
+            icon = new ImageIcon(getClass().getResource(contact.getImagePath()));
         } else {
             icon = new ImageIcon(getClass().getResource("/images/users/user.png"));
         }

@@ -26,6 +26,9 @@ public final class ContactManagerRightDetailsPanel extends JPanel{
 								     " Email : "," Company : "," Favorite : "," Notes :"
 									};
 
+	JLabel imageLabel;
+	JPanel imagePanel;
+	
 	private Contact contact;
 	
 	private final List<JLabel> labelList = new ArrayList<JLabel>();
@@ -42,14 +45,14 @@ public final class ContactManagerRightDetailsPanel extends JPanel{
 		ImageIcon iconUser = new ImageIcon(getClass().getResource("/images/users/user.png"));
 		Image imgUser = iconUser.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 		
-		JPanel imagePanel = new JPanel();
+		imagePanel = new JPanel();
 		imagePanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 1, Color.decode("#D6DEE8")));
 		imagePanel.setLayout(new BorderLayout());
 		imagePanel.setOpaque(true);
 		imagePanel.setBackground(Color.decode("#F7F9FC"));
 		imagePanel.setPreferredSize(new Dimension(100,80));
 		
-		JLabel imageLabel = new JLabel(new ImageIcon(imgUser));
+		imageLabel = new JLabel(new ImageIcon(imgUser));
 		imagePanel.add(imageLabel, BorderLayout.CENTER);
 		
 		
@@ -100,7 +103,19 @@ public final class ContactManagerRightDetailsPanel extends JPanel{
 	public void setContact(Contact contact) {
 		this.contact = contact;
 		
+		ImageIcon iconUser;
+		
 		if(contact==null)return;
+		
+		if (contact.getImagePath() != null && !contact.getImagePath().isBlank()) {
+			iconUser = new ImageIcon(getClass().getResource(contact.getImagePath()));
+        } else {
+        	iconUser = new ImageIcon(getClass().getResource("/images/users/user.png"));
+        }
+		
+		Image imgUser = iconUser.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+		
+		imageLabel.setIcon(new ImageIcon(imgUser));
 		
 		labelList.get(0).setText(labels[0] + contact.getFirstName());
 		labelList.get(1).setText(labels[1] + contact.getLastName());
@@ -110,6 +125,12 @@ public final class ContactManagerRightDetailsPanel extends JPanel{
 		labelList.get(5).setText(labels[5] + contact.isFavorite());
 		notesArea.setText(contact.getNotes());
 		
+	}
+	
+	
+	
+	public Contact getContact() {
+		return contact;
 	}
 	
 }
