@@ -84,12 +84,17 @@ public final class ContactManagerTopPanel extends JPanel{
 	    button.setFocusPainted(false);
 	    button.setOpaque(false);
 	    button.setCursor(new Cursor(Cursor.HAND_CURSOR));
-
+	    button.setBorderPainted(false);
+		button.setContentAreaFilled(true);
+		button.setOpaque(true);
+		button.setBackground(new Color(240,240,240));
+	    
 	    ImageIcon originalIcon = (ImageIcon) button.getIcon();
 	    Image img = originalIcon.getImage().getScaledInstance(28, 28, Image.SCALE_SMOOTH);
 	    ImageIcon scaledIcon = new ImageIcon(img);
 
 	    button.setIcon(scaledIcon);
+	    
 
 	    button.addActionListener(new ActionListener() {
 	        @Override
