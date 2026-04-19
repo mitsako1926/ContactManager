@@ -38,7 +38,8 @@ public final class ContactManagerCenterPanel extends JPanel{
 	ContactManagerCenterPanel(){
 		setPreferredSize(new Dimension(250,500));
 		setLayout(new BorderLayout());
-		
+		setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, Color.decode("#D6DEE8")));
+
 		
 		//TOP PANEL
 		topPanel.setPreferredSize(new Dimension(300,40));
@@ -57,7 +58,7 @@ public final class ContactManagerCenterPanel extends JPanel{
 		
 		
 		contactsPanel.setOpaque(true);
-		contactsPanel.setBackground(Color.PINK);
+		contactsPanel.setBackground(Color.decode("#F7F9FC"));
 		contactsPanel.setLayout(new BorderLayout());
 		contactsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		
@@ -88,8 +89,8 @@ public final class ContactManagerCenterPanel extends JPanel{
 		list = new JList<Contact>(model);
 		list.setCellRenderer(new ContactListRenderer());
 		list.setFont(new Font("Arial", Font.PLAIN, 18));
-		list.setBackground(Color.GRAY);
-		list.setForeground(Color.WHITE);
+		list.setBackground(Color.decode("#F7F9FC"));
+		list.setForeground(Color.DARK_GRAY);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setFont(new Font("Dialog",Font.PLAIN,17));
 		list.addMouseListener(new MouseAdapter() {

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -39,9 +40,10 @@ public final class ContactManagerTopPanel extends JPanel{
 		
 		setPreferredSize(new Dimension(700,50));
 		setLayout(new BorderLayout());
+		setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.decode("#D6DEE8")));
 		
 		//PANEL SEARCH
-		panelSearch.setBackground(Color.PINK);
+		panelSearch.setBackground(Color.decode("#F7F9FC"));
 		panelSearch.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 7));
 		
 		customizeTextField(searchField);
@@ -50,14 +52,14 @@ public final class ContactManagerTopPanel extends JPanel{
 		//PANEL BUTTONS
 		panelButtons.setLayout(new FlowLayout(FlowLayout.CENTER,10,5));
 		panelButtons.setPreferredSize(new Dimension(250,50));
-		panelButtons.setBackground(Color.RED);
+		panelButtons.setBackground(Color.decode("#F7F9FC"));
 		
 		Arrays.stream(buttons).map(JButton::new).forEach(button -> {customizeButton(button); panelButtons.add(button);});
 		
 		//LABEL
 		label.setPreferredSize(new Dimension(150,50));
 		label.setOpaque(true);
-		label.setBackground(Color.CYAN);
+		label.setBackground(Color.decode("#F7F9FC"));
 		
 		//ADD COMPONENTS TO THE MAIN PANEL
 		add(label,BorderLayout.WEST);

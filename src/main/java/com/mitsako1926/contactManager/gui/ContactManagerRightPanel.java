@@ -25,7 +25,7 @@ public final class ContactManagerRightPanel extends JPanel{
 		add(detailsPanel,"DETAILS");
 		add(addPanel,"ADD");
 		
-		cardLayout.show(this,"ADD");
+		cardLayout.show(this,"DETAILS");
 	}
 	
 	

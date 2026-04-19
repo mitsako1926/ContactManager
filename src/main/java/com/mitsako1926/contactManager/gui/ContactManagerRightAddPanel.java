@@ -25,10 +25,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public final class ContactManagerRightAddPanel extends JPanel{
-
-	private final String[] labels = {"First Name : ","Last Name : ","Phone : ",
-		     "Email : ","Company : ","Favorite : "
-			};
 	
 	private final JButton imageButton;
 	
@@ -44,7 +40,7 @@ public final class ContactManagerRightAddPanel extends JPanel{
 		JPanel imagePanel = new JPanel();
 		imagePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		imagePanel.setOpaque(true);
-		imagePanel.setBackground(Color.green);
+		imagePanel.setBackground(Color.decode("#F7F9FC"));
 		imagePanel.setPreferredSize(new Dimension(100,80));
 		
 		imageButton = new JButton(new ImageIcon(imgUser));
@@ -83,7 +79,7 @@ public final class ContactManagerRightAddPanel extends JPanel{
 		
 		JPanel infoPanel = new JPanel();
 		infoPanel.setOpaque(true);
-		infoPanel.setBackground(Color.BLACK);
+		infoPanel.setBackground(Color.decode("#F7F9FC"));
 		infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
 
 		infoPanel.add(createRow("First Name"));
@@ -91,6 +87,8 @@ public final class ContactManagerRightAddPanel extends JPanel{
 		infoPanel.add(createRow("Phone"));
 		infoPanel.add(createRow("Email"));
 		infoPanel.add(createRow("Company"));
+		infoPanel.add(createRow("Favorite"));
+		infoPanel.add(createRow("Notes"));
 		
 		//NOTES AREA 
 		
@@ -98,11 +96,16 @@ public final class ContactManagerRightAddPanel extends JPanel{
 		notesArea.setLineWrap(true);
 		notesArea.setText("");
 		notesArea.setWrapStyleWord(true);
-		notesArea.setFont(new Font("Arial", Font.PLAIN, 12));
+		notesArea.setFont(new Font("Arial", Font.BOLD, 12));
 		
 		JScrollPane scrollPane = new JScrollPane(notesArea);
 		scrollPane.setPreferredSize(new Dimension(250,110));
-		
+		scrollPane.setBorder(
+			    BorderFactory.createCompoundBorder(
+			        BorderFactory.createMatteBorder(1, 0, 1, 1, Color.decode("#D6DEE8")),
+			        BorderFactory.createEmptyBorder(10, 10, 10, 10)
+			    )
+			);
 		
 		//ADD EVERYTHING TO THE MAIN PANEL
 		
@@ -124,13 +127,21 @@ public final class ContactManagerRightAddPanel extends JPanel{
 	
 	
 	private JPanel createRow(String text) {
-	    JPanel row = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 2));
-	    row.setBackground(Color.cyan);
+	    
+		
+		JPanel row = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 2));
+	    row.setBackground(Color.decode("#F7F9FC"));
 
 	    JLabel label = new JLabel(text + " :");
 	    label.setOpaque(true);
-	    label.setBackground(Color.white);
+	    label.setBackground(Color.decode("#F7F9FC"));
 	    
+	    if(text.equals("Notes")) {
+	    	row.add(label);
+
+		    return row;
+	    }
+
 	    JTextField field = new JTextField(15);
 
 	    row.add(label);

@@ -18,8 +18,8 @@ import javax.swing.JTextArea;
 public final class ContactManagerRightDetailsPanel extends JPanel{
 
 	
-	private final String[] labels = {"First Name : Panagiotis","Last Name : Dimitrakopoulos","Phone : 6965748392",
-								     "Email : mitsako2006@gmail.com","Company : Razer","Favorite : yes","Notes :"
+	private final String[] labels = {" First Name : Panagiotis"," Last Name : Dimitrakopoulos"," Phone : 6965748392",
+								     " Email : mitsako2006@gmail.com"," Company : Razer"," Favorite : yes"," Notes :"
 									};
 
 	
@@ -34,9 +34,10 @@ public final class ContactManagerRightDetailsPanel extends JPanel{
 		Image imgUser = iconUser.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 		
 		JPanel imagePanel = new JPanel();
+		imagePanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 1, Color.decode("#D6DEE8")));
 		imagePanel.setLayout(new BorderLayout());
 		imagePanel.setOpaque(true);
-		imagePanel.setBackground(Color.CYAN);
+		imagePanel.setBackground(Color.decode("#F7F9FC"));
 		imagePanel.setPreferredSize(new Dimension(100,80));
 		
 		JLabel imageLabel = new JLabel(new ImageIcon(imgUser));
@@ -45,7 +46,7 @@ public final class ContactManagerRightDetailsPanel extends JPanel{
 		
 		//ALL INFORMATION
 		JPanel labelsPanel = new JPanel(new GridLayout(labels.length, 1, 5, 2));
-		labelsPanel.setBackground(Color.white);
+		labelsPanel.setBackground(Color.decode("#F7F9FC"));
 		labelsPanel.setOpaque(true);
 		Arrays.stream(labels).map(JLabel::new).forEach(label -> {customizeLabel(label); labelsPanel.add(label);});
 		
@@ -56,11 +57,12 @@ public final class ContactManagerRightDetailsPanel extends JPanel{
 		notesArea.setLineWrap(true);
 		notesArea.setText("We have a meeting at 3 today after we get lunch and then we have sexyyyy");
 		notesArea.setWrapStyleWord(true);
-		notesArea.setFont(new Font("Arial", Font.PLAIN, 12));
+		notesArea.setFont(new Font("Arial", Font.BOLD, 12));
 		notesArea.setEditable(false);
 		
 		JScrollPane scrollPane = new JScrollPane(notesArea);
 		scrollPane.setPreferredSize(new Dimension(250,110));
+		scrollPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		
 		add(imagePanel,BorderLayout.NORTH);
 		add(labelsPanel,BorderLayout.CENTER);
@@ -72,9 +74,10 @@ public final class ContactManagerRightDetailsPanel extends JPanel{
 	
 	private void customizeLabel(JLabel label) {
 		label.setPreferredSize(new Dimension(250,30));
-		label.setFont(new Font("Arial", Font.PLAIN, 12));
-		label.setForeground(Color.black);
-		label.setBackground(Color.red);
+		label.setFont(new Font("Arial", Font.BOLD, 12));
+		label.setForeground(Color.DARK_GRAY);
+		label.setBackground(Color.decode("#F7F9FC"));
+		label.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 1, Color.decode("#D6DEE8")));
 		label.setOpaque(true);
 		if(label.getText().equals("Notes :")) {
 			label.setHorizontalAlignment(JLabel.CENTER);

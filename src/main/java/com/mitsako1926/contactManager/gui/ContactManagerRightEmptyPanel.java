@@ -16,6 +16,7 @@ public final class ContactManagerRightEmptyPanel extends JPanel{
 		setPreferredSize(new Dimension(250,500));
 		setOpaque(true);
 		setLayout(new GridBagLayout());
+		setBackground(Color.decode("#F7F9FC"));
 		
 		JLabel labelEmpty = new JLabel("<html><div style='text-align: center;'>"
 			    + "No contact selected<br>"
@@ -25,7 +26,7 @@ public final class ContactManagerRightEmptyPanel extends JPanel{
 		labelEmpty.setFont(new Font("Arial", Font.BOLD, 15));
 		labelEmpty.setForeground(Color.DARK_GRAY);
 		labelEmpty.setOpaque(true);
-		labelEmpty.setBackground(Color.GREEN);
+		labelEmpty.setBackground(Color.decode("#F7F9FC"));
 		labelEmpty.setPreferredSize(new Dimension(200,100));
 		
 		add(labelEmpty);

@@ -6,11 +6,13 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -21,8 +23,11 @@ public final class ContactManagerSideBarPanel extends JPanel{
 	
 	private final JPanel panelButtons = new JPanel(new GridLayout(3, 1, 10, 15));
 	
+	
+	private JButton selectedButton;
+	
 	public ContactManagerSideBarPanel(){
-		setBackground(Color.black);
+		setBackground(Color.decode("#F7F9FC"));
 		setPreferredSize(new Dimension(150,500));
 		setLayout(new BorderLayout());
 		setOpaque(true);
@@ -51,6 +56,8 @@ public final class ContactManagerSideBarPanel extends JPanel{
 		//PANEL THAT HOLDS THE BUTTONS
 		panelButtons.setPreferredSize(new Dimension(150,170));
 		
+		setSelectedButton(allContactsButton);
+		
 		panelButtons.add(allContactsButton);
 		panelButtons.add(favoriteContactsButton);
 		panelButtons.add(addContactButton);
@@ -69,8 +76,13 @@ public final class ContactManagerSideBarPanel extends JPanel{
 		button.setPreferredSize(new Dimension(120, 40));
 		button.setFocusPainted(false);
 		button.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		
-		button.setBorderPainted(false);
+		button.setBorder(
+			    BorderFactory.createCompoundBorder(
+			        BorderFactory.createMatteBorder(0, 0, 1, 0, Color.decode("#D6DEE8")),
+			        BorderFactory.createEmptyBorder(0, 10, 0, 0)
+			    )
+			);
+		button.setBorderPainted(true);
 		button.setContentAreaFilled(true);
 		button.setOpaque(true);
 		button.setBackground(new Color(240,240,240));
@@ -78,12 +90,16 @@ public final class ContactManagerSideBarPanel extends JPanel{
 		button.addMouseListener(new MouseAdapter() {
 		    @Override
 		    public void mouseEntered(MouseEvent e) {
-		        button.setBackground(new Color(220,220,220));
+		        if (button != selectedButton) {
+		            button.setBackground(new Color(220,220,220));
+		        }
 		    }
 
 		    @Override
 		    public void mouseExited(MouseEvent e) {
-		        button.setBackground(new Color(240,240,240));
+		        if (button != selectedButton) {
+		            button.setBackground(new Color(240,240,240));
+		        }
 		    }
 		});
 		
@@ -103,13 +119,48 @@ public final class ContactManagerSideBarPanel extends JPanel{
 	
 	
 	private void press(ActionEvent e) {
-		if(e.getSource()==allContactsButton) {
-			System.out.println(0);
-		}else if(e.getSource()==favoriteContactsButton) {
-			System.out.println(1);
-		}else if(e.getSource()==addContactButton){
-			System.out.println(2);
-		}
+	    if(e.getSource() == allContactsButton) {
+	        setSelectedButton(allContactsButton);
+	        System.out.println("ALL");
+	        
+	    } else if(e.getSource() == favoriteContactsButton) {
+	        setSelectedButton(favoriteContactsButton);
+	        System.out.println("FAV");
+	        
+	    } else if(e.getSource() == addContactButton){
+	        setSelectedButton(addContactButton);
+	        System.out.println("ADD");
+	    }
+	}
+	
+	
+	
+	private void setSelectedButton(JButton button) {
+	    resetButtonStyle(allContactsButton);
+	    resetButtonStyle(favoriteContactsButton);
+	    resetButtonStyle(addContactButton);
+
+	    button.setBackground(Color.WHITE);
+	    button.setBorder(
+	        BorderFactory.createCompoundBorder(
+	            BorderFactory.createMatteBorder(0, 3, 1, 0, Color.decode("#3B82F6")),
+	            BorderFactory.createEmptyBorder(0, 10, 0, 0)
+	        )
+	    );
+
+	    selectedButton = button;
+	}
+	
+	
+	
+	private void resetButtonStyle(JButton button) {
+	    button.setBackground(new Color(240,240,240));
+	    button.setBorder(
+	        BorderFactory.createCompoundBorder(
+	            BorderFactory.createMatteBorder(0, 0, 1, 0, Color.decode("#D6DEE8")),
+	            BorderFactory.createEmptyBorder(0, 10, 0, 0)
+	        )
+	    );
 	}
 	
 	
