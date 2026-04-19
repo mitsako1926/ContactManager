@@ -19,7 +19,7 @@ public final class ContactManagerRightDetailsPanel extends JPanel{
 
 	
 	private final String[] labels = {"First Name : Panagiotis","Last Name : Dimitrakopoulos","Phone : 6965748392",
-								     "Email : mitsako2006@gmail.com","Company : Razer","Favorite : yes"
+								     "Email : mitsako2006@gmail.com","Company : Razer","Favorite : yes","Notes :"
 									};
 
 	
@@ -57,7 +57,8 @@ public final class ContactManagerRightDetailsPanel extends JPanel{
 		notesArea.setText("We have a meeting at 3 today after we get lunch and then we have sexyyyy");
 		notesArea.setWrapStyleWord(true);
 		notesArea.setFont(new Font("Arial", Font.PLAIN, 12));
-
+		notesArea.setEditable(false);
+		
 		JScrollPane scrollPane = new JScrollPane(notesArea);
 		scrollPane.setPreferredSize(new Dimension(250,110));
 		
@@ -75,6 +76,9 @@ public final class ContactManagerRightDetailsPanel extends JPanel{
 		label.setForeground(Color.black);
 		label.setBackground(Color.red);
 		label.setOpaque(true);
+		if(label.getText().equals("Notes :")) {
+			label.setHorizontalAlignment(JLabel.CENTER);
+		}
 	}
 	
 	
