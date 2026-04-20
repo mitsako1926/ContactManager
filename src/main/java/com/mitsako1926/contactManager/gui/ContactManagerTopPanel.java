@@ -82,9 +82,56 @@ public final class ContactManagerTopPanel extends JPanel{
 		textField.setText("Search...");
 		textField.setFont(new Font("Arial",Font.ITALIC,12));
 		textField.setForeground(Color.DARK_GRAY);
+		
+		textField.addFocusListener(new java.awt.event.FocusAdapter() {
+		    @Override
+		    public void focusGained(java.awt.event.FocusEvent e) {
+		        if (textField.getText().equals("Search...")) {
+		        	textField.setText("");
+		        	textField.setFont(new Font("Arial", Font.PLAIN, 12));
+		        	textField.setForeground(Color.BLACK);
+		        }
+		    }
+
+		    @Override
+		    public void focusLost(java.awt.event.FocusEvent e) {
+		        if (textField.getText().isEmpty()) {
+		        	textField.setText("Search...");
+		        	textField.setFont(new Font("Arial", Font.ITALIC, 12));
+		        	textField.setForeground(Color.DARK_GRAY);
+		        }
+		    }
+		});
+		
+		textField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+
+		    @Override
+		    public void insertUpdate(javax.swing.event.DocumentEvent e) {
+		        onSearchChanged();
+		    }
+
+		    @Override
+		    public void removeUpdate(javax.swing.event.DocumentEvent e) {
+		        onSearchChanged();
+		    }
+
+		    @Override
+		    public void changedUpdate(javax.swing.event.DocumentEvent e) {
+		        onSearchChanged();
+		    }
+		});
+		
+		
 	}
 	
-	
+	private void onSearchChanged() {
+	    String text = searchField.getText();
+	    
+	    if(text.equals("Search...")||text.isBlank()) return;
+	    	
+	    service.searchContacts(text);
+	    
+	}
 	
 	private void customizeButton(JButton button) {
 	    button.setPreferredSize(new Dimension(40, 40));

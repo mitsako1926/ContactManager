@@ -299,10 +299,6 @@ public final class ContactDAO {
     }
     
     
-    
-    //NOT USED YET
-
-    
 
     public List<Contact> searchContacts(String keyword) {
     	
@@ -316,8 +312,7 @@ public final class ContactDAO {
                 "lower(first_name) like ? or " +
                 "lower(last_name) like ? or " +
                 "phone like ? or " +
-                "lower(email) like ? or " +
-                "lower(company) like ?";
+                "lower(email) like ? ";
     	
     	try (Connection conn = DatabaseConnection.getConnection();
 	         PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -328,7 +323,6 @@ public final class ContactDAO {
 	        ps.setString(2, searchPattern);
 	        ps.setString(3, searchPattern);
 	        ps.setString(4, searchPattern);
-	        ps.setString(5, searchPattern);
 
 	        try (ResultSet rs = ps.executeQuery()) {
 	            while (rs.next()) {
@@ -337,11 +331,15 @@ public final class ContactDAO {
 	        }
 	    		                
 	    } catch (SQLException e) {
-	    	System.out.println("Error searching contacts");	    
+	    	System.out.println("Error searching contacts");	
 	    }
 	    	
         return list;
     }
+    
+    
+    
+    //NOT USED YET
     
     
     
@@ -468,10 +466,6 @@ public final class ContactDAO {
         return list;
     	
     }
-    
-    
-    
-    
 
 
 

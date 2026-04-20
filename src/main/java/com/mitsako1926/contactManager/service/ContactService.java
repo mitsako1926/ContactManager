@@ -89,8 +89,9 @@ public final class ContactService {
 	
 	
 	
-	public List<Contact> searchContacts(String keyword){
-		return contactDAO.searchContacts(keyword);
+	public void searchContacts(String keyword){
+		contacts = contactDAO.searchContacts(keyword);
+		centerPanel.callRefresh();
 	}
 	
 	
@@ -116,7 +117,7 @@ public final class ContactService {
 		}else contacts = contactDAO.getFavoriteContactsOrderByLastName();
 		
 	}
-	
+
 	
 	
 	public void sortFavoritesFirst(){
