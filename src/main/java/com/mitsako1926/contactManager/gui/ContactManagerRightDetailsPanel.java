@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -101,6 +102,10 @@ public final class ContactManagerRightDetailsPanel extends JPanel{
 	
 	
 	
+	private final Path USER_IMAGES_DIR = Path.of(System.getProperty("user.home"), "ContactManager", "user-images");
+	
+	
+	
 	public void setContact(Contact contact) {
 		this.contact = contact;
 		
@@ -114,8 +119,14 @@ public final class ContactManagerRightDetailsPanel extends JPanel{
             icon = new ImageIcon(getClass().getResource(contact.getImagePath()));
         
         }else if (path != null && path.startsWith("user-images")) {
-            Path p = Path.of("user-images/").resolve(path.replace("user-images/", ""));
-            icon = new ImageIcon(p.toString());
+        	String fileName = path.substring("user-images/".length());
+            Path p = USER_IMAGES_DIR.resolve(fileName);
+
+            if (Files.exists(p)) {
+                icon = new ImageIcon(p.toString());
+            } else {
+                icon = new ImageIcon(getClass().getResource("/images/users/user.png"));
+            }
         } 
         
         else {

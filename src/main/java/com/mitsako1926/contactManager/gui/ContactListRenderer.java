@@ -57,6 +57,10 @@ public final class ContactListRenderer extends JPanel implements ListCellRendere
 
     
     
+    private final Path USER_IMAGES_DIR = Path.of(System.getProperty("user.home"), "ContactManager", "user-images");
+    
+    
+    
     private ImageIcon loadIcon(Contact contact) {
         ImageIcon icon;
 
@@ -67,9 +71,10 @@ public final class ContactListRenderer extends JPanel implements ListCellRendere
             icon = new ImageIcon(getClass().getResource(contact.getImagePath()));
         
         }else if (path != null && path.startsWith("user-images")) {
-            Path p = Path.of("user-images/").resolve(path.replace("user-images/", ""));
+            String fileName = path.substring("user-images/".length());
+            Path p = USER_IMAGES_DIR.resolve(fileName);
             icon = new ImageIcon(p.toString());
-        } 
+        }
         
         else {
             icon = new ImageIcon(getClass().getResource("/images/users/user.png"));

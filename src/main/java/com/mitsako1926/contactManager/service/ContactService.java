@@ -411,7 +411,7 @@ public final class ContactService {
 	
 	
 	
-	Path USER_IMAGES_DIR = Path.of("user-images");
+	private final Path USER_IMAGES_DIR = Path.of(System.getProperty("user.home"), "ContactManager", "user-images");	
 	
 	
 	

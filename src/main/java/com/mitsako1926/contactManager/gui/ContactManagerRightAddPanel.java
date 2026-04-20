@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -255,8 +256,12 @@ public final class ContactManagerRightAddPanel extends JPanel{
 		});
 	}
 
+	
+	
+	private final Path USER_IMAGES_DIR = Path.of(System.getProperty("user.home"), "ContactManager", "user-images");
 
-
+	
+	
 	public void setContactState(Contact contact) {
 		ImageIcon iconUser;
 		
@@ -266,8 +271,14 @@ public final class ContactManagerRightAddPanel extends JPanel{
             iconUser = new ImageIcon(getClass().getResource(path));
         
         }else if (path != null && path.startsWith("user-images")) {
-            Path p = Path.of("user-images/").resolve(path.replace("user-images/", ""));
-            iconUser = new ImageIcon(p.toString());
+            String fileName = path.substring("user-images/".length());
+            Path p = USER_IMAGES_DIR.resolve(fileName);
+
+            if (Files.exists(p)) {
+                iconUser = new ImageIcon(p.toString());
+            } else {
+                iconUser = new ImageIcon(getClass().getResource("/images/users/user.png"));
+            }
         } 
         
         else {
