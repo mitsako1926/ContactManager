@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,20 +27,21 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import com.mitsako1926.contactManager.model.Contact;
 import com.mitsako1926.contactManager.service.ContactService;
 
 public final class ContactManagerRightAddPanel extends JPanel{
 	
-	private final JButton imageButton, addButton;
+	private final JButton imageButton, addOrUpdateButton;
 	
 	private final JTextArea notesArea;
 
 	private ContactService service;
 	
-	private ImageIcon iconUser;
+	private ImageIcon iconAddUser,iconUpdateUser,iconAdd;
 	
-	private Image imgUser;
-	
+	private Image imgAddUser,imgUpdateUser,imgAdd;
+
 	private final List<JTextField> textFieldList = new ArrayList<JTextField>();
 	
 	public ContactManagerRightAddPanel() {
@@ -47,9 +49,13 @@ public final class ContactManagerRightAddPanel extends JPanel{
 		setLayout(new BorderLayout());
 		setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
 		
+		//UPDATE USER IMAGE
+		iconUpdateUser = new ImageIcon(getClass().getResource("/images/icons/update.png"));
+		imgUpdateUser = iconUpdateUser.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+		
 		//USER IMAGE
-		iconUser = new ImageIcon(getClass().getResource("/images/icons/add-user-icon.png"));
-		imgUser = iconUser.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+		iconAddUser = new ImageIcon(getClass().getResource("/images/icons/add-user-icon.png"));
+		imgAddUser = iconAddUser.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 		
 		JPanel imagePanel = new JPanel();
 		imagePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -57,7 +63,7 @@ public final class ContactManagerRightAddPanel extends JPanel{
 		imagePanel.setBackground(Color.decode("#F7F9FC"));
 		imagePanel.setPreferredSize(new Dimension(100,80));
 		
-		imageButton = new JButton(new ImageIcon(imgUser));
+		imageButton = new JButton(new ImageIcon(imgAddUser));
 		customizeImageButton(imageButton);
 		
 		imagePanel.add(imageButton, BorderLayout.CENTER);
@@ -100,14 +106,14 @@ public final class ContactManagerRightAddPanel extends JPanel{
 		panelAdd.setPreferredSize(new Dimension(250,50));
 		panelAdd.setBackground(Color.decode("#F7F9FC"));
 		
-		ImageIcon iconAll = new ImageIcon(getClass().getResource("/images/icons/add.png"));
-		Image imgAll = iconAll.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+		iconAdd = new ImageIcon(getClass().getResource("/images/icons/add.png"));
+		imgAdd = iconAdd.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
 		
-		addButton = new JButton("Add",new ImageIcon(imgAll));
-		customizeAddButton(addButton);
+		addOrUpdateButton = new JButton("Add",new ImageIcon(imgAdd));
+		customizeAddButton(addOrUpdateButton);
 		
 		
-		panelAdd.add(addButton);
+		panelAdd.add(addOrUpdateButton);
 		//ADD EVERYTHING TO THE MAIN PANEL
 		
 		add(imagePanel,BorderLayout.NORTH);
@@ -128,25 +134,31 @@ public final class ContactManagerRightAddPanel extends JPanel{
 	private void press(ActionEvent e) {
 		if(e.getSource()==imageButton) {
 			ImageIcon iconUser = service.setUserIcon();
+			
 			if(iconUser!=null) {
 				Image imgUser = iconUser.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 				
 				imageButton.setIcon(new ImageIcon(imgUser));
 			}
 			
-		}else if(e.getSource()==addButton) {
-			service.addContactToDB(new ArrayList<JTextField>(textFieldList), notesArea.getText());
+		}else if(e.getSource()==addOrUpdateButton) {
+			service.addOrUpdateContactToDB(new ArrayList<JTextField>(textFieldList), notesArea.getText(),addOrUpdateButton.getText());
+			
 		}
+		
 	}
 	
 	
 	
 	public void setDefaultState() {
-		imageButton.setIcon(new ImageIcon(imgUser));
+		imageButton.setIcon(new ImageIcon(imgAddUser));
 		
 		textFieldList.forEach((tf)->tf.setText(""));
 		
 		notesArea.setText("");
+		
+		addOrUpdateButton.setText("Add");
+		addOrUpdateButton.setIcon(new ImageIcon(imgAdd));
 	}
 	
 	
@@ -241,6 +253,43 @@ public final class ContactManagerRightAddPanel extends JPanel{
 			}
 			
 		});
+	}
+
+
+
+	public void setContactState(Contact contact) {
+		ImageIcon iconUser;
+		
+		String path = contact.getImagePath();
+
+        if (path != null && !path.isBlank() && path.startsWith("/images")) {
+            iconUser = new ImageIcon(getClass().getResource(path));
+        
+        }else if (path != null && path.startsWith("user-images")) {
+            Path p = Path.of("user-images/").resolve(path.replace("user-images/", ""));
+            iconUser = new ImageIcon(p.toString());
+        } 
+        
+        else {
+            iconUser = new ImageIcon(getClass().getResource("/images/users/user.png"));
+        }
+
+        Image scaled = iconUser.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+		
+		imageButton.setIcon(new ImageIcon(scaled));
+		
+		textFieldList.get(0).setText(contact.getFirstName());
+		textFieldList.get(1).setText(contact.getLastName());
+		textFieldList.get(2).setText(contact.getPhone());
+		textFieldList.get(3).setText(contact.getEmail());
+		textFieldList.get(4).setText(contact.getCompany());
+		textFieldList.get(5).setText(String.valueOf(contact.isFavorite()));
+		
+		notesArea.setText(contact.getNotes());
+		
+		addOrUpdateButton.setText("Update");
+		addOrUpdateButton.setIcon(new ImageIcon(imgUpdateUser));
+		
 	}
 	
 	

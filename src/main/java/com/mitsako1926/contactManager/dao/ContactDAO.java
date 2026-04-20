@@ -81,32 +81,7 @@ public final class ContactDAO {
 	
 	
 
-    public Optional<Contact> getContactById(int id) {
-    			
-		String sql = "Select * from contacts Where id = ?";
-		
-	    try (Connection conn = DatabaseConnection.getConnection();
-	         PreparedStatement ps = conn.prepareStatement(sql)) {
-
-	    	ps.setInt(1, id);
-	    	
-	    	try (ResultSet rs = ps.executeQuery()) {
-	            if (rs.next()) {
-	                return Optional.of(mapResultSetToContact(rs));
-	            }
-	        }	    	
-	        
-	    } catch (SQLException e) {
-	        System.out.println("Error retrieving contact");
-	    }
-	    	
-        return Optional.empty();
-        
-    }
-    
-    
-    
-    public List<Contact> getFavoriteContacts() {
+	public List<Contact> getFavoriteContacts() {
 		
     	List<Contact> list = new ArrayList<Contact>();
     	
@@ -125,10 +100,10 @@ public final class ContactDAO {
         return list;
         
     }
-
-    
-    
-    public void setFavorite(int id, boolean favorite) {
+	
+	
+	
+	public void setFavorite(int id, boolean favorite) {
     	
     	String sql = "Update contacts set favorite = ? WHERE id = ?";
     	
@@ -145,10 +120,10 @@ public final class ContactDAO {
    	    }
     	
     }
-    
-    
-    
-    public void updateContact(Contact contact) {
+	
+	
+	
+	public void updateContact(Contact contact) {
     	
         String sql = "Update contacts set first_name = ?, last_name = ?, phone = ?, email = ?, company = ?, notes = ?, favorite = ? , image_path = ? WHERE id = ?";
     	
@@ -172,51 +147,10 @@ public final class ContactDAO {
    	    }
     
     }
-
-    
-
-    public List<Contact> searchContacts(String keyword) {
-    	
-    	if (keyword == null || keyword.trim().isEmpty()) {
-    	    return getAllContacts();
-    	}
-    	
-    	List<Contact> list = new ArrayList<Contact>();
-		
-    	String sql = "Select * from contacts where " +
-                "lower(first_name) like ? or " +
-                "lower(last_name) like ? or " +
-                "phone like ? or " +
-                "lower(email) like ? or " +
-                "lower(company) like ?";
-    	
-    	try (Connection conn = DatabaseConnection.getConnection();
-	         PreparedStatement ps = conn.prepareStatement(sql)) {
-	    	
-	    	String searchPattern = "%" + keyword.trim().toLowerCase() + "%";
-	    	
-	    	ps.setString(1, searchPattern);
-	        ps.setString(2, searchPattern);
-	        ps.setString(3, searchPattern);
-	        ps.setString(4, searchPattern);
-	        ps.setString(5, searchPattern);
-
-	        try (ResultSet rs = ps.executeQuery()) {
-	            while (rs.next()) {
-	                list.add(mapResultSetToContact(rs));
-	            }
-	        }
-	    		                
-	    } catch (SQLException e) {
-	    	System.out.println("Error searching contacts");	    
-	    }
-	    	
-        return list;
-    }
-    
-    
-    
-    public List<Contact> getAllContactsOrderByFirstName(){
+	
+	
+	
+	public List<Contact> getAllContactsOrderByFirstName(){
     	
     	List<Contact> list = new ArrayList<Contact>();
 		
@@ -236,6 +170,8 @@ public final class ContactDAO {
         
     }
     
+    
+    
     public List<Contact> getFavoriteContactsOrderByFirstName(){
     	
     	List<Contact> list = new ArrayList<Contact>();
@@ -254,6 +190,8 @@ public final class ContactDAO {
 	    	
         return list;
     }
+    
+    
     
     public List<Contact> getAllContactsOrderByLastName(){
     	
@@ -317,6 +255,67 @@ public final class ContactDAO {
 	    	
         return list;
         
+    }
+    
+    
+    
+    private Contact mapResultSetToContact(ResultSet rs) throws SQLException {
+        return new Contact(
+            rs.getInt("id"),
+            rs.getString("first_name"),
+            rs.getString("last_name"),
+            rs.getString("phone"),
+            rs.getString("email"),
+            rs.getString("company"),
+            rs.getString("notes"),
+            rs.getBoolean("favorite"),
+            rs.getString("image_path")
+        );
+    }
+    
+    
+    
+    //NOT USED YET
+
+    
+
+    public List<Contact> searchContacts(String keyword) {
+    	
+    	if (keyword == null || keyword.trim().isEmpty()) {
+    	    return getAllContacts();
+    	}
+    	
+    	List<Contact> list = new ArrayList<Contact>();
+		
+    	String sql = "Select * from contacts where " +
+                "lower(first_name) like ? or " +
+                "lower(last_name) like ? or " +
+                "phone like ? or " +
+                "lower(email) like ? or " +
+                "lower(company) like ?";
+    	
+    	try (Connection conn = DatabaseConnection.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+	    	
+	    	String searchPattern = "%" + keyword.trim().toLowerCase() + "%";
+	    	
+	    	ps.setString(1, searchPattern);
+	        ps.setString(2, searchPattern);
+	        ps.setString(3, searchPattern);
+	        ps.setString(4, searchPattern);
+	        ps.setString(5, searchPattern);
+
+	        try (ResultSet rs = ps.executeQuery()) {
+	            while (rs.next()) {
+	                list.add(mapResultSetToContact(rs));
+	            }
+	        }
+	    		                
+	    } catch (SQLException e) {
+	    	System.out.println("Error searching contacts");	    
+	    }
+	    	
+        return list;
     }
     
     
@@ -489,18 +488,27 @@ public final class ContactDAO {
     
     
     
-    private Contact mapResultSetToContact(ResultSet rs) throws SQLException {
-        return new Contact(
-            rs.getInt("id"),
-            rs.getString("first_name"),
-            rs.getString("last_name"),
-            rs.getString("phone"),
-            rs.getString("email"),
-            rs.getString("company"),
-            rs.getString("notes"),
-            rs.getBoolean("favorite"),
-            rs.getString("image_path")
-        );
+    public Optional<Contact> getContactById(int id) {
+		
+		String sql = "Select * from contacts Where id = ?";
+		
+	    try (Connection conn = DatabaseConnection.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+	    	ps.setInt(1, id);
+	    	
+	    	try (ResultSet rs = ps.executeQuery()) {
+	            if (rs.next()) {
+	                return Optional.of(mapResultSetToContact(rs));
+	            }
+	        }	    	
+	        
+	    } catch (SQLException e) {
+	        System.out.println("Error retrieving contact");
+	    }
+	    	
+        return Optional.empty();
+        
     }
 
 

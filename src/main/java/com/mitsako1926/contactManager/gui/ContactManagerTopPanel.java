@@ -121,7 +121,7 @@ public final class ContactManagerTopPanel extends JPanel{
 	private void press(ActionEvent e) {
 		
 		if(e.getSource()==buttonsList.get(0)) {
-			System.out.println("edit");
+			service.updateContact();
 		}else if(e.getSource()==buttonsList.get(1)) {
 			service.deleteContact();
 		}else if(e.getSource()==buttonsList.get(2)){

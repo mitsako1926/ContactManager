@@ -70,6 +70,8 @@ public final class ContactService {
 		centerPanel.callRefresh();
 		rightPanel.showEmpty();
 		rightPanel.detailsOfContact(null);
+		rightPanel.resetAddPanel();
+		
 	}
 	
 	
@@ -79,6 +81,8 @@ public final class ContactService {
 		centerPanel.callRefresh();	
 		rightPanel.showEmpty();
 		rightPanel.detailsOfContact(null);
+		rightPanel.resetAddPanel();
+		
 	}
 	
 	
@@ -125,13 +129,14 @@ public final class ContactService {
 		if(centerPanel.getList().getSelectedValue()!=null) {
 			centerPanel.getList().clearSelection();
 		}
+		rightPanel.resetAddPanel();
 		rightPanel.showAdd();
 		
 	}
 	
 	
 	
-	public void addContactToDB(ArrayList<JTextField> list,String notes) {
+	public void addOrUpdateContactToDB(ArrayList<JTextField> list, String notes, String addOrUpdate) {
 		
 		String firstName = list.get(0).getText();
 	    String lastName  = list.get(1).getText();
@@ -158,19 +163,56 @@ public final class ContactService {
 	            selectedImagePath
 	    );
 		
-		contactDAO.addContact(contact);
-				
-		rightPanel.resetAddPanel();
-		
-		loadAllContacts();
-		
-		Contact contactWithId = findExistingContact(contacts, contact);
+	    if(addOrUpdate.contains("Add")) {
+	    	contactDAO.addContact(contact);
+	    	
+	    	rightPanel.resetAddPanel();
+			
+			loadAllContacts();
+			
+			Contact contactWithId = findExistingContact(contacts, contact);
 
-		getDetails(contactWithId);
-		
-		centerPanel.setSelectedContact(contactWithId);
-		
-		selectedImagePath = null;
+			getDetails(contactWithId);
+			
+			centerPanel.setSelectedContact(contactWithId);
+			
+			selectedImagePath = null;
+	    }else if(addOrUpdate.contains("Update")){
+	    	Contact contactWithId = centerPanel.getSelectedContact();
+
+	    	contact.setId(contactWithId.getId());
+	    	if(selectedImagePath == null) {
+	    		contact.setImagePath(contactWithId.getImagePath());
+	    	}
+	    	
+	    	contactDAO.updateContact(contact);
+	    	
+	    	rightPanel.resetAddPanel();
+			
+			loadAllContacts();
+			
+			contact = findExistingContactWithId(contacts,contact);
+			
+			getDetails(contact);
+			
+			centerPanel.setSelectedContact(contact);
+			
+			selectedImagePath = null;
+	    }
+	    
+	    
+
+	}
+	
+	
+	
+	public Contact findExistingContactWithId(List<Contact> contacts, Contact target) {
+		for (Contact c : contacts) { 
+			if (c.equals(target)) { 
+				return c; 
+			} 
+		}
+		return null;
 	}
 	
 	
@@ -183,6 +225,7 @@ public final class ContactService {
 	        }
 	    }
 	    return null;
+	    
 	}
 	
 	
@@ -243,6 +286,7 @@ public final class ContactService {
 	    }
 
 	    return null;
+	    
 	}
 	
 	
@@ -256,17 +300,20 @@ public final class ContactService {
 		
 		if(previousButton!=null && selectedButton.getText().equals("Add Contact")) {
 			sideBarPanel.selectButton(previousButton);
-		}
-			
+		}	
 		
 	}
 	
 	
 	
-	public void updateContact(Contact contact) {
-		contactDAO.updateContact(contact);
+	public void updateContact() {
+		Contact contactToUpdate = rightPanel.getContact();
+		
+		rightPanel.setAddToUpdatePanel(contactToUpdate);
+		rightPanel.showAdd();
+		
 	}
-	
+
 	
 	
 	public void deleteContact() {		
@@ -298,6 +345,7 @@ public final class ContactService {
 		
 		contact.setFavorite(!contact.isFavorite());
 		getDetails(contact);
+		
 	}
 	
 	
@@ -320,6 +368,7 @@ public final class ContactService {
 	    }
 
 	    return null;
+	    
 	}
 	
 	
@@ -352,6 +401,7 @@ public final class ContactService {
 	        e.printStackTrace();
 	        return null;
 	    }
+	    
 	}
 	
 	
@@ -381,6 +431,7 @@ public final class ContactService {
 	    }
 
 	    return null;
+	    
 	}
 	
 	
@@ -388,6 +439,7 @@ public final class ContactService {
 	private String getExtension(String name) {
 	    int i = name.lastIndexOf('.');
 	    return i > 0 ? name.substring(i) : "";
+	    
 	}
 	
 	
@@ -405,6 +457,7 @@ public final class ContactService {
 	    }
 
 	    return null;
+	    
 	}
 	
 	
@@ -479,6 +532,7 @@ public final class ContactService {
 	            removeFocus(child);
 	        }
 	    }
+	    
 	}
 	
 	
