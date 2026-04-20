@@ -118,6 +118,7 @@ public final class ContactManagerCenterPanel extends JPanel{
 		//ADD EVERYTHING TO THE MAIN PANEL
 		add(topPanel,BorderLayout.NORTH);
 		add(contactsPanel,BorderLayout.CENTER);
+		
 	}
 	
 	
@@ -125,6 +126,7 @@ public final class ContactManagerCenterPanel extends JPanel{
 	private void refreshList() {
 	    model.clear();
 	    model.addAll(service.getContacts());
+	    labelContacts.setText("    All Contacts(" + service.getContacts().size() +")");
 	}
 	
 	

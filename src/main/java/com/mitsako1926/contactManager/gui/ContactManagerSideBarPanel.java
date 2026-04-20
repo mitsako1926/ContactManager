@@ -187,7 +187,16 @@ public final class ContactManagerSideBarPanel extends JPanel{
 	
 	
 	
+	public JButton getAllContactsButton() {
+		return allContactsButton;
+	}
+	
+	
+	
 	public void selectButton(JButton button) {
 		setSelectedButton(button);
 	}
+	
+	
+	
 }

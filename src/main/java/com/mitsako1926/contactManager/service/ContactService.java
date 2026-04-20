@@ -177,10 +177,12 @@ public final class ContactService {
 			centerPanel.setSelectedContact(contactWithId);
 			
 			selectedImagePath = null;
+			
 	    }else if(addOrUpdate.contains("Update")){
 	    	Contact contactWithId = centerPanel.getSelectedContact();
 
 	    	contact.setId(contactWithId.getId());
+	    	
 	    	if(selectedImagePath == null) {
 	    		contact.setImagePath(contactWithId.getImagePath());
 	    	}
@@ -199,8 +201,8 @@ public final class ContactService {
 			
 			selectedImagePath = null;
 	    }
-	    
-	    
+	    		
+		sideBarPanel.selectButton(sideBarPanel.getAllContactsButton());
 
 	}
 	
@@ -309,11 +311,13 @@ public final class ContactService {
 	public void updateContact() {
 		Contact contactToUpdate = rightPanel.getContact();
 		
+		if(contactToUpdate==null) return;
+		
 		rightPanel.setAddToUpdatePanel(contactToUpdate);
 		rightPanel.showAdd();
 		
 	}
-
+	
 	
 	
 	public void deleteContact() {		

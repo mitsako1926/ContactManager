@@ -259,6 +259,31 @@ public final class ContactDAO {
     
     
     
+    public Optional<Contact> getContactById(int id) {
+		
+		String sql = "Select * from contacts Where id = ?";
+		
+	    try (Connection conn = DatabaseConnection.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+	    	ps.setInt(1, id);
+	    	
+	    	try (ResultSet rs = ps.executeQuery()) {
+	            if (rs.next()) {
+	                return Optional.of(mapResultSetToContact(rs));
+	            }
+	        }	    	
+	        
+	    } catch (SQLException e) {
+	        System.out.println("Error retrieving contact");
+	    }
+	    	
+        return Optional.empty();
+        
+    }
+    
+    
+    
     private Contact mapResultSetToContact(ResultSet rs) throws SQLException {
         return new Contact(
             rs.getInt("id"),
@@ -368,48 +393,6 @@ public final class ContactDAO {
     
     
     
-    public int countContacts() {
-    			
-		String sql = "Select count(*) from contacts";
-		
-	    try (Connection conn = DatabaseConnection.getConnection();
-	         PreparedStatement ps = conn.prepareStatement(sql);
-	    	ResultSet rs = ps.executeQuery()) {
-
-	    	if(rs.next()) return rs.getInt(1);
-	        
-	                
-	    } catch (SQLException e) {
-	    	System.out.println("Error counting contacts");
-	    }
-	    	
-        return 0;
-        
-    }
-    
-    
-    
-    public int countFavoriteContacts() {
-    			
-		String sql = "Select count(*) from contacts where favorite = 1";
-		
-	    try (Connection conn = DatabaseConnection.getConnection();
-	         PreparedStatement ps = conn.prepareStatement(sql);
-	    	ResultSet rs = ps.executeQuery()) {
-
-	    	if(rs.next()) return rs.getInt(1);
-	        
-	                
-	    } catch (SQLException e) {
-	    	System.out.println("Error counting favorite contacts");
-	    }
-	    	
-        return 0;
-        
-    }
-    
-    
-    
     public List<Contact> getContactsByCompany(String company){
     	
     	List<Contact> list = new ArrayList<Contact>();
@@ -488,28 +471,7 @@ public final class ContactDAO {
     
     
     
-    public Optional<Contact> getContactById(int id) {
-		
-		String sql = "Select * from contacts Where id = ?";
-		
-	    try (Connection conn = DatabaseConnection.getConnection();
-	         PreparedStatement ps = conn.prepareStatement(sql)) {
-
-	    	ps.setInt(1, id);
-	    	
-	    	try (ResultSet rs = ps.executeQuery()) {
-	            if (rs.next()) {
-	                return Optional.of(mapResultSetToContact(rs));
-	            }
-	        }	    	
-	        
-	    } catch (SQLException e) {
-	        System.out.println("Error retrieving contact");
-	    }
-	    	
-        return Optional.empty();
-        
-    }
+    
 
 
 
