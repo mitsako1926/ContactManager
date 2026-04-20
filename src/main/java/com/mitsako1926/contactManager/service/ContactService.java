@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -238,13 +240,6 @@ public final class ContactService {
 	
 	private String inputValidation(String firstName, String lastName, String phone, String email, String company, String favorite, String addOrUpdate) {
 
-	    if (firstName == null) return "First name is null.";
-	    if (lastName == null) return "Last name is null.";
-	    if (phone == null) return "Phone is null.";
-	    if (email == null) return "Email is null.";
-	    if (company == null) return "Company is null.";
-	    if (favorite == null) return "Favorite is null.";
-
 	    firstName = firstName.trim();
 	    lastName = lastName.trim();
 	    phone = phone.trim();
@@ -431,20 +426,30 @@ public final class ContactService {
 	    try {
 	        Files.createDirectories(USER_IMAGES_DIR);
 
+	        byte[] bytes = Files.readAllBytes(selectedFile.toPath());
+	        MessageDigest md = MessageDigest.getInstance("SHA-256");
+	        byte[] hashBytes = md.digest(bytes);
+
+	        StringBuilder sb = new StringBuilder();
+	        for (byte b : hashBytes) {
+	            sb.append(String.format("%02x", b));
+	        }
+
 	        String extension = getExtension(selectedFile.getName());
-	        String newName = UUID.randomUUID() + extension;
+	        String newName = sb.toString() + extension;
 
 	        Path target = USER_IMAGES_DIR.resolve(newName);
-	        
-	        Files.copy(selectedFile.toPath(), target, StandardCopyOption.REPLACE_EXISTING);
+
+	        if (!Files.exists(target)) {
+	            Files.copy(selectedFile.toPath(), target);
+	        }
 
 	        return "user-images/" + newName;
 
-	    } catch (IOException e) {
+	    } catch (IOException | NoSuchAlgorithmException e) {
 	        e.printStackTrace();
 	        return null;
 	    }
-	    
 	}
 	
 	
