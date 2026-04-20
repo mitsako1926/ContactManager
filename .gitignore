@@ -3,5 +3,3 @@
 target/
 bin/
 .settings/
-user-images/*
-!user-images/.gitkeep
