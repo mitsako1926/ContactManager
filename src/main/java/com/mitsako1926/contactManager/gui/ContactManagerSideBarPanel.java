@@ -194,7 +194,9 @@ public final class ContactManagerSideBarPanel extends JPanel{
 	
 	
 	public void selectButton(JButton button) {
+		service.resetFilters();
 		setSelectedButton(button);
+		
 	}
 	
 	

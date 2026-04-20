@@ -71,6 +71,7 @@ public final class ContactService {
 		rightPanel.showEmpty();
 		rightPanel.detailsOfContact(null);
 		rightPanel.resetAddPanel();
+		resetFilters();
 		
 	}
 	
@@ -82,6 +83,7 @@ public final class ContactService {
 		rightPanel.showEmpty();
 		rightPanel.detailsOfContact(null);
 		rightPanel.resetAddPanel();
+		resetFilters();
 		
 	}
 	
@@ -119,6 +121,7 @@ public final class ContactService {
 	
 	public void sortFavoritesFirst(){
 		contacts = contactDAO.getAllContactsOrderByFavoriteFirst();
+		sideBarPanel.selectButton(sideBarPanel.getAllContactsButton());
 	}
 	
 	
@@ -332,10 +335,18 @@ public final class ContactService {
 		    
 		    loadAllContacts();
 		    
+		    sideBarPanel.selectButton(sideBarPanel.getAllContactsButton());
+		    
 		    rightPanel.showEmpty();
 		    rightPanel.detailsOfContact(null);
 		}
 	    
+	}
+	
+	
+	
+	public void resetFilters() {
+		centerPanel.getComboBox().setSelectedIndex(-1);
 	}
 	
 	

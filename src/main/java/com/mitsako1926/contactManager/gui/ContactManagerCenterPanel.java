@@ -149,6 +149,12 @@ public final class ContactManagerCenterPanel extends JPanel{
 	
 	
 	
+	public JComboBox getComboBox() {
+		return comboBox;
+	}
+	
+	
+	
 	public JList<Contact> getList(){
 		return list;
 	}
