@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -103,17 +104,25 @@ public final class ContactManagerRightDetailsPanel extends JPanel{
 	public void setContact(Contact contact) {
 		this.contact = contact;
 		
-		ImageIcon iconUser;
+		ImageIcon icon;
 		
-		if(contact==null)return;
+		if(contact==null)return;	
 		
-		if (contact.getImagePath() != null && !contact.getImagePath().isBlank()) {
-			iconUser = new ImageIcon(getClass().getResource(contact.getImagePath()));
-        } else {
-        	iconUser = new ImageIcon(getClass().getResource("/images/users/user.png"));
+		String path = contact.getImagePath();
+
+        if (path != null && !path.isBlank() && path.startsWith("/images")) {
+            icon = new ImageIcon(getClass().getResource(contact.getImagePath()));
+        
+        }else if (path.startsWith("user-images")) {
+            Path p = Path.of("user-images/").resolve(path.replace("user-images/", ""));
+            icon = new ImageIcon(p.toString());
+        } 
+        
+        else {
+            icon = new ImageIcon(getClass().getResource("/images/users/user.png"));
         }
 		
-		Image imgUser = iconUser.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+        Image imgUser = icon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 		
 		imageLabel.setIcon(new ImageIcon(imgUser));
 		

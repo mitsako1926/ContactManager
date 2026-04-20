@@ -3,6 +3,7 @@ package com.mitsako1926.contactManager.gui;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Image;
+import java.nio.file.Path;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -55,9 +56,18 @@ public final class ContactListRenderer extends JPanel implements ListCellRendere
     private ImageIcon loadIcon(Contact contact) {
         ImageIcon icon;
 
-        if (contact.getImagePath() != null && !contact.getImagePath().isBlank()) {
+        
+        String path = contact.getImagePath();
+
+        if (path != null && !path.isBlank() && path.startsWith("/images")) {
             icon = new ImageIcon(getClass().getResource(contact.getImagePath()));
-        } else {
+        
+        }else if (path.startsWith("user-images")) {
+            Path p = Path.of("user-images/").resolve(path.replace("user-images/", ""));
+            icon = new ImageIcon(p.toString());
+        } 
+        
+        else {
             icon = new ImageIcon(getClass().getResource("/images/users/user.png"));
         }
 

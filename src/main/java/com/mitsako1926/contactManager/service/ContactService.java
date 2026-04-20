@@ -2,13 +2,23 @@ package com.mitsako1926.contactManager.service;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.FileDialog;
+import java.awt.Frame;
 import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 import com.mitsako1926.contactManager.dao.ContactDAO;
 import com.mitsako1926.contactManager.gui.ContactManagerCenterPanel;
@@ -17,7 +27,8 @@ import com.mitsako1926.contactManager.gui.ContactManagerSideBarPanel;
 import com.mitsako1926.contactManager.model.Contact;
 
 public final class ContactService {
-
+	
+	private String selectedImagePath;
 	
 	private final ContactDAO contactDAO = new ContactDAO();
 	
@@ -115,7 +126,24 @@ public final class ContactService {
 			centerPanel.getList().clearSelection();
 		}
 		rightPanel.showAdd();
-		//contactDAO.addContact(contact);
+		
+	}
+	
+	
+	
+	public void addContactToDB(ArrayList<JTextField> list,String notes) {
+		Contact contact = new Contact(
+				list.get(0).getText(),
+				list.get(1).getText(),
+				list.get(2).getText(),
+				list.get(3).getText(),
+				list.get(4).getText(),
+				notes,
+				Boolean.valueOf(list.get(5).getText()),
+				selectedImagePath
+				
+		);
+		contactDAO.addContact(contact);
 	}
 	
 	
@@ -171,6 +199,113 @@ public final class ContactService {
 		
 		contact.setFavorite(!contact.isFavorite());
 		getDetails(contact);
+	}
+	
+	
+	
+	public ImageIcon setUserIcon() {
+	    FileDialog dialog = new FileDialog((Frame) null, "Select Image", FileDialog.LOAD);
+	    dialog.setVisible(true);
+
+	    String file = dialog.getFile();
+	    String dir = dialog.getDirectory();
+
+	    if (file != null) {
+	        String fullPath = dir + file;
+
+	        String relativePath = processImage(fullPath);
+
+	        selectedImagePath = relativePath;
+
+	        return loadImage(relativePath);
+	    }
+
+	    return null;
+	}
+	
+	
+	
+	Path USER_IMAGES_DIR = Path.of("user-images");
+	
+	
+	
+	public String processImage(String fullPath) {
+	    File selectedFile = new File(fullPath);
+
+	    String builtIn = checkBuiltIn(selectedFile);
+	    if (builtIn != null) {
+	        return builtIn;
+	    }
+
+	    try {
+	        Files.createDirectories(USER_IMAGES_DIR);
+
+	        String extension = getExtension(selectedFile.getName());
+	        String newName = UUID.randomUUID() + extension;
+
+	        Path target = USER_IMAGES_DIR.resolve(newName);
+	        
+	        Files.copy(selectedFile.toPath(), target, StandardCopyOption.REPLACE_EXISTING);
+
+	        return "user-images/" + newName;
+
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	        return null;
+	    }
+	}
+	
+	
+	
+	private String checkBuiltIn(File file) {
+	    try {
+	        String selected = file.getCanonicalPath();
+
+	        String[][] builtIns = {
+	            {"/images/users/woman1.png", "src/main/resources/images/users/woman1.png"},
+	            {"/images/users/woman2.png", "src/main/resources/images/users/woman2.png"},
+	            {"/images/users/man1.png", "src/main/resources/images/users/man1.png"},
+	            {"/images/users/man2.png", "src/main/resources/images/users/man2.png"},
+	            {"/images/users/man3.png", "src/main/resources/images/users/man3.png"},
+	            {"/images/users/user.png", "src/main/resources/images/users/user.png"}
+	        };
+
+	        for (String[] entry : builtIns) {
+	            File f = new File(entry[1]);
+	            if (f.exists() && f.getCanonicalPath().equals(selected)) {
+	                return entry[0];
+	            }
+	        }
+
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+
+	    return null;
+	}
+	
+	
+	
+	private String getExtension(String name) {
+	    int i = name.lastIndexOf('.');
+	    return i > 0 ? name.substring(i) : "";
+	}
+	
+	
+	
+	public ImageIcon loadImage(String path) {
+
+	    if (path.startsWith("/images/")) {
+	        return new ImageIcon(getClass().getResource(path));
+	    }
+
+	    if (path.startsWith("user-images/")) {
+	    	String fileName = path.substring("user-images/".length());
+	        Path p = USER_IMAGES_DIR.resolve(fileName);
+	        return new ImageIcon(p.toString());
+	    }
+
+	    return null;
 	}
 	
 	

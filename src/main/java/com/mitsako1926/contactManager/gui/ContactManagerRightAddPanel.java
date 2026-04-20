@@ -12,7 +12,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -24,17 +26,25 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import com.mitsako1926.contactManager.service.ContactService;
+
 public final class ContactManagerRightAddPanel extends JPanel{
 	
-	private final JButton imageButton;
+	private final JButton imageButton, addButton;
+	
+	private final JTextArea notesArea;
+
+	private ContactService service;
+	
+	private final List<JTextField> textFieldList = new ArrayList<JTextField>();
 	
 	public ContactManagerRightAddPanel() {
 		setPreferredSize(new Dimension(250,500));		
 		setLayout(new BorderLayout());
-		setBorder(BorderFactory.createEmptyBorder(0, 0, 40, 0));
+		setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
 		
 		//USER IMAGE
-		ImageIcon iconUser = new ImageIcon(getClass().getResource("/images/users/user.png"));
+		ImageIcon iconUser = new ImageIcon(getClass().getResource("/images/icons/add-user-icon.png"));
 		Image imgUser = iconUser.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 		
 		JPanel imagePanel = new JPanel();
@@ -44,33 +54,7 @@ public final class ContactManagerRightAddPanel extends JPanel{
 		imagePanel.setPreferredSize(new Dimension(100,80));
 		
 		imageButton = new JButton(new ImageIcon(imgUser));
-		imageButton.setFocusPainted(false);
-		imageButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		imageButton.setBorderPainted(false);
-		imageButton.setContentAreaFilled(false);
-		imageButton.setOpaque(false);
-		imageButton.setBackground(new Color(240,240,240));
-		
-		imageButton.addMouseListener(new MouseAdapter() {
-		    @Override
-		    public void mouseEntered(MouseEvent e) {
-		    	imageButton.setBackground(new Color(220,220,220));
-		    }
-
-		    @Override
-		    public void mouseExited(MouseEvent e) {
-		    	imageButton.setBackground(new Color(240,240,240));
-		    }
-		});
-		
-		imageButton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				press(e);
-			}
-			
-		});
+		customizeImageButton(imageButton);
 		
 		imagePanel.add(imageButton, BorderLayout.CENTER);
 		
@@ -89,10 +73,8 @@ public final class ContactManagerRightAddPanel extends JPanel{
 		infoPanel.add(createRow("Company"));
 		infoPanel.add(createRow("Favorite"));
 		infoPanel.add(createRow("Notes"));
-		
-		//NOTES AREA 
-		
-		JTextArea notesArea = new JTextArea(5, 20);
+				
+		notesArea = new JTextArea(5, 20);
 		notesArea.setLineWrap(true);
 		notesArea.setText("");
 		notesArea.setWrapStyleWord(true);
@@ -107,20 +89,49 @@ public final class ContactManagerRightAddPanel extends JPanel{
 			    )
 			);
 		
+		infoPanel.add(scrollPane);
+		
+		//PANEL ADD BUTTON
+		JPanel panelAdd = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		panelAdd.setPreferredSize(new Dimension(250,50));
+		panelAdd.setBackground(Color.decode("#F7F9FC"));
+		
+		ImageIcon iconAll = new ImageIcon(getClass().getResource("/images/icons/add.png"));
+		Image imgAll = iconAll.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+		
+		addButton = new JButton("Add",new ImageIcon(imgAll));
+		customizeAddButton(addButton);
+		
+		
+		panelAdd.add(addButton);
 		//ADD EVERYTHING TO THE MAIN PANEL
 		
 		add(imagePanel,BorderLayout.NORTH);
 		add(infoPanel,BorderLayout.CENTER);
-		add(scrollPane,BorderLayout.SOUTH);
+		add(panelAdd,BorderLayout.SOUTH);
 		
 		
 	}
 	
 	
 	
+	public void setService(ContactService service) {
+		this.service = service;
+	}
+	
+	
+	
 	private void press(ActionEvent e) {
 		if(e.getSource()==imageButton) {
-			System.out.println(0);
+			ImageIcon iconUser = service.setUserIcon();
+			if(iconUser!=null) {
+				Image imgUser = iconUser.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+				
+				imageButton.setIcon(new ImageIcon(imgUser));
+			}
+			
+		}else if(e.getSource()==addButton) {
+			service.addContactToDB(new ArrayList<JTextField>(textFieldList), notesArea.getText());
 		}
 	}
 	
@@ -144,6 +155,8 @@ public final class ContactManagerRightAddPanel extends JPanel{
 
 	    JTextField field = new JTextField(15);
 
+	    textFieldList.add(field);
+	    
 	    row.add(label);
 	    row.add(field);
 
@@ -152,5 +165,68 @@ public final class ContactManagerRightAddPanel extends JPanel{
 
 
 	
+	
+	private void customizeAddButton(JButton button) {
+		button.setHorizontalAlignment(JButton.LEFT);
+		button.setHorizontalTextPosition(JButton.RIGHT);
+		button.setIconTextGap(10);
+		button.setFocusPainted(false);
+		button.setPreferredSize(new Dimension(80,35));
+		button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		button.setBorder(
+			    BorderFactory.createCompoundBorder(
+			        BorderFactory.createMatteBorder(1, 1, 1, 1, Color.decode("#D6DEE8")),
+			        BorderFactory.createEmptyBorder(0, 10, 0, 0)
+			    )
+			);
+		button.setBorderPainted(true);
+		button.setContentAreaFilled(true);
+		button.setOpaque(true);
+		button.setBackground(new Color(240,240,240));
+		
+		button.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				press(e);
+			}
+
+			
+			
+		});
+		
+	}
+	
+	
+	
+	private void customizeImageButton(JButton button) {
+		button.setFocusPainted(false);
+		button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		button.setBorderPainted(false);
+		button.setContentAreaFilled(false);
+		button.setOpaque(false);
+		button.setBackground(new Color(240,240,240));
+		
+		button.addMouseListener(new MouseAdapter() {
+		    @Override
+		    public void mouseEntered(MouseEvent e) {
+		    	button.setBackground(new Color(220,220,220));
+		    }
+
+		    @Override
+		    public void mouseExited(MouseEvent e) {
+		    	button.setBackground(new Color(240,240,240));
+		    }
+		});
+		
+		button.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				press(e);
+			}
+			
+		});
+	}
 	
 }

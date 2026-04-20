@@ -32,6 +32,8 @@ public final class ContactManagerRightPanel extends JPanel{
 		this.service = service;
 		service.setRightPanel(this);
 		
+		addPanel.setService(service);
+		
 		add(emptyPanel,"EMPTY");
 		add(detailsPanel,"DETAILS");
 		add(addPanel,"ADD");
