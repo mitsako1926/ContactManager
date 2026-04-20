@@ -67,6 +67,12 @@ public final class ContactManagerRightPanel extends JPanel{
 	
 	
 	
+	public void resetAddPanel() {
+		addPanel.setDefaultState();
+	}
+	
+	
+	
 	public Contact getContact() {
 		
 		if(detailsPanel.getContact()==null) {

@@ -141,6 +141,12 @@ public final class ContactManagerCenterPanel extends JPanel{
 	
 	
 	
+	public void setSelectedContact(Contact contact) {
+		list.setSelectedValue(contact, true);
+	}
+	
+	
+	
 	public JList<Contact> getList(){
 		return list;
 	}

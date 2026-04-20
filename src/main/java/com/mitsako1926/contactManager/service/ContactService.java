@@ -132,18 +132,117 @@ public final class ContactService {
 	
 	
 	public void addContactToDB(ArrayList<JTextField> list,String notes) {
-		Contact contact = new Contact(
-				list.get(0).getText(),
-				list.get(1).getText(),
-				list.get(2).getText(),
-				list.get(3).getText(),
-				list.get(4).getText(),
-				notes,
-				Boolean.valueOf(list.get(5).getText()),
-				selectedImagePath
-				
-		);
+		
+		String firstName = list.get(0).getText();
+	    String lastName  = list.get(1).getText();
+	    String phone     = list.get(2).getText();
+	    String email     = list.get(3).getText();
+	    String company   = list.get(4).getText();
+	    String favorite  = list.get(5).getText();
+
+	    String isValid = inputValidation(firstName, lastName, phone, email, company, favorite);
+	    
+	    if(isValid!=null) {
+	    	optionPaneInvalid(isValid);	
+	    	return;
+	    }
+	    
+	    Contact contact = new Contact(
+	            firstName,
+	            lastName,
+	            phone,
+	            email,
+	            company,
+	            notes,
+	            Boolean.parseBoolean(favorite),
+	            selectedImagePath
+	    );
+		
 		contactDAO.addContact(contact);
+				
+		rightPanel.resetAddPanel();
+		
+		loadAllContacts();
+		
+		Contact contactWithId = findExistingContact(contacts, contact);
+
+		getDetails(contactWithId);
+		
+		centerPanel.setSelectedContact(contactWithId);
+		
+		selectedImagePath = null;
+	}
+	
+	
+	
+	public Contact findExistingContact(List<Contact> contacts, Contact target) {
+
+		for (Contact c : contacts) {
+	        if (c.getPhone().equals(target.getPhone()) && c.getFirstName().equals(target.getFirstName()) && c.getLastName().equals(target.getLastName())) {
+	            return c;
+	        }
+	    }
+	    return null;
+	}
+	
+	
+	
+	private String inputValidation(String firstName, String lastName, String phone, String email, String company, String favorite) {
+
+	    if (firstName == null) return "First name is null.";
+	    if (lastName == null) return "Last name is null.";
+	    if (phone == null) return "Phone is null.";
+	    if (email == null) return "Email is null.";
+	    if (company == null) return "Company is null.";
+	    if (favorite == null) return "Favorite is null.";
+
+	    firstName = firstName.trim();
+	    lastName = lastName.trim();
+	    phone = phone.trim();
+	    email = email.trim();
+	    company = company.trim();
+	    favorite = favorite.trim();
+
+	    if (firstName.isEmpty()) return "First name is required.";
+	    if (lastName.isEmpty()) return "Last name is required.";
+	    if (phone.isEmpty()) return "Phone is required.";
+
+	    if (firstName.length() > 50) return "First name cannot exceed 50 characters.";
+	    if (lastName.length() > 50) return "Last name cannot exceed 50 characters.";
+	    if (phone.length() > 20) return "Phone cannot exceed 20 characters.";
+	    if (email.length() > 100) return "Email cannot exceed 100 characters.";
+	    if (company.length() > 100) return "Company cannot exceed 100 characters.";
+
+	    if (!firstName.matches("[\\p{L} .'-]+")) {
+	        return "First name contains invalid characters.";
+	    }
+
+	    if (!lastName.matches("[\\p{L} .'-]+")) {
+	        return "Last name contains invalid characters.";
+	    }
+
+	    if (!phone.matches("[0-9+()\\-\\s]+")) {
+	        return "Phone contains invalid characters.";
+	    }
+
+	    String digitsOnly = phone.replaceAll("\\D", "");
+	    if (digitsOnly.length() < 7 || digitsOnly.length() > 15) {
+	        return "Phone must contain between 7 and 15 digits.";
+	    }
+
+	    if (!email.isEmpty()) {
+	        if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+	            return "Invalid email format.";
+	        }
+	    }
+
+	    if (!company.isEmpty()) {
+	        if (!company.matches("[\\p{L}0-9 .,&'\\-()]+")) {
+	            return "Company contains invalid characters.";
+	        }
+	    }
+
+	    return null;
 	}
 	
 	
@@ -175,7 +274,7 @@ public final class ContactService {
 		
 		if(contact==null)return;
 		
-		Object selected = optionPane(contact);
+		Object selected = optionPaneDelete(contact);
 
 		if ("Delete".equals(selected)) {
 		    contactDAO.deleteContact(contact.getId());
@@ -310,7 +409,7 @@ public final class ContactService {
 	
 	
 	
-	private Object optionPane(Contact contact) {
+	private Object optionPaneDelete(Contact contact) {
 		String fullName = contact.toString();
 		
 		String message = "<html><body style='font-size:12px;'>"
@@ -337,6 +436,34 @@ public final class ContactService {
 		dialog.setVisible(true);
 
 		return optionPane.getValue();
+		
+	}
+	
+	
+	
+	private void optionPaneInvalid(String text) {
+		
+		String message = "<html><body style='font-size:11px;'>"
+		        		+ text + "</b>"+ "</body></html>";
+
+		ImageIcon originalIcon = new ImageIcon(getClass().getResource("/images/icons/warning.png"));
+	    Image img = originalIcon.getImage().getScaledInstance(12, 12, Image.SCALE_SMOOTH);
+		
+		JOptionPane optionPane = new JOptionPane(
+		    message,
+		    JOptionPane.PLAIN_MESSAGE,
+		    JOptionPane.YES_NO_OPTION,
+		    null,
+		    new Object[]{"OK"}
+		);
+		
+		JDialog dialog = optionPane.createDialog("Invalid Input");
+		
+		dialog.setIconImage(img);
+		
+		removeFocus(optionPane);
+
+		dialog.setVisible(true);
 		
 	}
 	

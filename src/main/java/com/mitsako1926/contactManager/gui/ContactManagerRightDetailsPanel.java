@@ -113,7 +113,7 @@ public final class ContactManagerRightDetailsPanel extends JPanel{
         if (path != null && !path.isBlank() && path.startsWith("/images")) {
             icon = new ImageIcon(getClass().getResource(contact.getImagePath()));
         
-        }else if (path.startsWith("user-images")) {
+        }else if (path != null && path.startsWith("user-images")) {
             Path p = Path.of("user-images/").resolve(path.replace("user-images/", ""));
             icon = new ImageIcon(p.toString());
         } 

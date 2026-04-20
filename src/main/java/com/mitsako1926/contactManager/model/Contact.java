@@ -86,4 +86,20 @@ public final class Contact {
     public String toString() {
         return firstName + " " + lastName;
     }
+    
+    
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Contact)) return false;
+
+        Contact c = (Contact) o;
+        
+        return id==c.id;
+    }
+
+    
+    
+    
 }

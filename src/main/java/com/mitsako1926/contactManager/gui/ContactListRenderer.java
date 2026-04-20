@@ -2,7 +2,11 @@ package com.mitsako1926.contactManager.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.RenderingHints;
+import java.awt.geom.Ellipse2D;
+import java.awt.image.BufferedImage;
 import java.nio.file.Path;
 
 import javax.swing.ImageIcon;
@@ -62,7 +66,7 @@ public final class ContactListRenderer extends JPanel implements ListCellRendere
         if (path != null && !path.isBlank() && path.startsWith("/images")) {
             icon = new ImageIcon(getClass().getResource(contact.getImagePath()));
         
-        }else if (path.startsWith("user-images")) {
+        }else if (path != null && path.startsWith("user-images")) {
             Path p = Path.of("user-images/").resolve(path.replace("user-images/", ""));
             icon = new ImageIcon(p.toString());
         } 
@@ -73,9 +77,12 @@ public final class ContactListRenderer extends JPanel implements ListCellRendere
 
         Image scaled = icon.getImage().getScaledInstance(28, 28, Image.SCALE_SMOOTH);
         
+        
         return new ImageIcon(scaled);
     }
     
+    
+   
     
     
 }

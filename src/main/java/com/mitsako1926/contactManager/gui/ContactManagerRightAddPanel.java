@@ -36,6 +36,10 @@ public final class ContactManagerRightAddPanel extends JPanel{
 
 	private ContactService service;
 	
+	private ImageIcon iconUser;
+	
+	private Image imgUser;
+	
 	private final List<JTextField> textFieldList = new ArrayList<JTextField>();
 	
 	public ContactManagerRightAddPanel() {
@@ -44,8 +48,8 @@ public final class ContactManagerRightAddPanel extends JPanel{
 		setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
 		
 		//USER IMAGE
-		ImageIcon iconUser = new ImageIcon(getClass().getResource("/images/icons/add-user-icon.png"));
-		Image imgUser = iconUser.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+		iconUser = new ImageIcon(getClass().getResource("/images/icons/add-user-icon.png"));
+		imgUser = iconUser.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 		
 		JPanel imagePanel = new JPanel();
 		imagePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -133,6 +137,16 @@ public final class ContactManagerRightAddPanel extends JPanel{
 		}else if(e.getSource()==addButton) {
 			service.addContactToDB(new ArrayList<JTextField>(textFieldList), notesArea.getText());
 		}
+	}
+	
+	
+	
+	public void setDefaultState() {
+		imageButton.setIcon(new ImageIcon(imgUser));
+		
+		textFieldList.forEach((tf)->tf.setText(""));
+		
+		notesArea.setText("");
 	}
 	
 	
@@ -228,5 +242,8 @@ public final class ContactManagerRightAddPanel extends JPanel{
 			
 		});
 	}
+	
+	
+	
 	
 }
