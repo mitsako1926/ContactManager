@@ -283,22 +283,6 @@ public final class ContactDAO {
     }
     
     
-    
-    private Contact mapResultSetToContact(ResultSet rs) throws SQLException {
-        return new Contact(
-            rs.getInt("id"),
-            rs.getString("first_name"),
-            rs.getString("last_name"),
-            rs.getString("phone"),
-            rs.getString("email"),
-            rs.getString("company"),
-            rs.getString("notes"),
-            rs.getBoolean("favorite"),
-            rs.getString("image_path")
-        );
-    }
-    
-    
 
     public List<Contact> searchContacts(String keyword) {
     	
@@ -336,10 +320,6 @@ public final class ContactDAO {
 	    	
         return list;
     }
-    
-    
-    
-    //NOT USED YET
     
     
     
@@ -388,6 +368,26 @@ public final class ContactDAO {
         return false;
     	
     }
+    
+  
+    
+    private Contact mapResultSetToContact(ResultSet rs) throws SQLException {
+        return new Contact(
+            rs.getInt("id"),
+            rs.getString("first_name"),
+            rs.getString("last_name"),
+            rs.getString("phone"),
+            rs.getString("email"),
+            rs.getString("company"),
+            rs.getString("notes"),
+            rs.getBoolean("favorite"),
+            rs.getString("image_path")
+        );
+    }
+    
+    
+    
+    //NOT USED YET
     
     
     

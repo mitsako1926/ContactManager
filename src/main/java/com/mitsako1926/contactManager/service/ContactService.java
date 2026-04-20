@@ -149,7 +149,7 @@ public final class ContactService {
 	    String company   = list.get(4).getText();
 	    String favorite  = list.get(5).getText();
 
-	    String isValid = inputValidation(firstName, lastName, phone, email, company, favorite);
+	    String isValid = inputValidation(firstName, lastName, phone, email, company, favorite, addOrUpdate);
 	    
 	    if(isValid!=null) {
 	    	optionPaneInvalid(isValid);	
@@ -236,7 +236,7 @@ public final class ContactService {
 	
 	
 	
-	private String inputValidation(String firstName, String lastName, String phone, String email, String company, String favorite) {
+	private String inputValidation(String firstName, String lastName, String phone, String email, String company, String favorite, String addOrUpdate) {
 
 	    if (firstName == null) return "First name is null.";
 	    if (lastName == null) return "Last name is null.";
@@ -290,7 +290,34 @@ public final class ContactService {
 	            return "Company contains invalid characters.";
 	        }
 	    }
-
+	    
+	    if(addOrUpdate.equals("Update")) {
+	    	Contact contact = centerPanel.getSelectedContact();
+		    
+		    if(!contact.getEmail().trim().equals(email)) {
+		    	if(contactDAO.existsByEmail(email) && !email.isBlank()) {
+			    	return "This email already exists";
+			    }
+		    }
+		    
+		    if(!contact.getPhone().trim().equals(phone)) {
+		    	if(contactDAO.existsByPhone(phone)) {
+			    	return "This phone number already exists";
+			    }
+		    }
+		    
+	    }else if(addOrUpdate.equals("Add")){
+	    	
+	    	if(contactDAO.existsByEmail(email) && !email.isBlank()) {
+		    	return "This email already exists";
+		    }
+	    	
+	    	if(contactDAO.existsByPhone(phone)) {
+		    	return "This phone number already exists";
+		    }
+	    }
+	    
+	    
 	    return null;
 	    
 	}
