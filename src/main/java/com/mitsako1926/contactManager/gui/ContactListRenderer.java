@@ -7,6 +7,7 @@ import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 import javax.swing.ImageIcon;
@@ -73,7 +74,12 @@ public final class ContactListRenderer extends JPanel implements ListCellRendere
         }else if (path != null && path.startsWith("user-images")) {
             String fileName = path.substring("user-images/".length());
             Path p = USER_IMAGES_DIR.resolve(fileName);
-            icon = new ImageIcon(p.toString());
+
+            if (Files.exists(p)) {
+                icon = new ImageIcon(p.toString());
+            } else {
+                icon = new ImageIcon(getClass().getResource("/images/users/user.png"));
+            }
         }
         
         else {
