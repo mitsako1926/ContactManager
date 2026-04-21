@@ -92,26 +92,26 @@ public final class ContactService {
 	//xanw to selected meta apo add/update panta
 	//null pointer an kanw edit update edit update(epidh xanw to selected)
 	
-	private void setOriginalButton() {
-		JButton button = sideBarPanel.getSelectedButton();
-		JButton previousButton = sideBarPanel.getPreviousButton();
-		
-		if(button.getText().equals("All Contacts")) {
-			sideBarPanel.selectButton(button);
-			
-		}else if (sideBarPanel.getSelectedButton().getText().equals("Favorites")) {
-			sideBarPanel.selectButton(button);
-			
-		}else {
-			if(previousButton.getText().equals("All Contacts")) {
-				sideBarPanel.selectButton(previousButton);
-				
-			}else {
-				sideBarPanel.selectButton(previousButton);
-				
-			}
-		}
-	}
+//	private void setOriginalButton() {
+//		JButton button = sideBarPanel.getSelectedButton();
+//		JButton previousButton = sideBarPanel.getPreviousButton();
+//		
+//		if(button.getText().equals("All Contacts")) {
+//			sideBarPanel.selectButton(button);
+//			
+//		}else if (sideBarPanel.getSelectedButton().getText().equals("Favorites")) {
+//			sideBarPanel.selectButton(button);
+//			
+//		}else {
+//			if(previousButton.getText().equals("All Contacts")) {
+//				sideBarPanel.selectButton(previousButton);
+//				
+//			}else {
+//				sideBarPanel.selectButton(previousButton);
+//				
+//			}
+//		}
+//	}
 	
 	public void searchContacts(String keyword){
 		if(keyword.isBlank()&&sideBarPanel.getSelectedButton().getText().equals("All Contacts")) {
@@ -208,25 +208,22 @@ public final class ContactService {
 	            selectedImagePath
 	    );
 		
-	    Contact contactToSelect = null;
 	    
 	    if(addOrUpdate.contains("Add")) {
 	    	contactDAO.addContact(contact);
 	    	
 	    	rightPanel.resetAddPanel();
 			
-	    	contacts = contactDAO.getAllContacts();
-			centerPanel.callRefresh();
+	    	loadAllContacts();
 			
 			Contact contactWithId = findExistingContact(contacts, contact);
 
-		    setOriginalButton();	  
-
 			getDetails(contactWithId);
+			
+			centerPanel.setSelectedContact(contactWithId);
 						
 			selectedImagePath = null;
 			
-			contactToSelect = contactWithId;
 	    }else if(addOrUpdate.contains("Update")){
 	    	Contact contactWithId = centerPanel.getSelectedContact();
 
@@ -244,15 +241,14 @@ public final class ContactService {
 			
 			contact = findExistingContactWithId(contacts,contact);
 		    
-			setOriginalButton();	  
-
+			centerPanel.setSelectedContact(contact);
+			
 			getDetails(contact);
 						
 			selectedImagePath = null;
 			
-			contactToSelect = contact;
 	    }
-	    	
+	    sideBarPanel.selectButton(sideBarPanel.getAllContactsButton());
 
 	}
 	
@@ -372,7 +368,6 @@ public final class ContactService {
 		
 		if(previousButton!=null && selectedButton.getText().equals("Add Contact")) {
 			sideBarPanel.selectButton(previousButton);
-			centerPanel.setSelectedContact(contact);
 		}	
 		
 	}
