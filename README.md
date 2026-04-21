@@ -79,7 +79,7 @@ C:\Users\<your-user>\ContactManager\user-images\
 
 ## 🛠️ Technologies Used
 
-- **Java 21+**
+- **Java 22**
 - **Java Swing (AWT/Swing GUI)**
 - **MySQL**
 - **Wamp Server 3.3.5**
@@ -95,8 +95,7 @@ C:\Users\<your-user>\ContactManager\user-images\
 - Make sure you have Maven installed (run this at terminal: mvn --version)
 - Import the provided SQL script into your database before running the application
 - Ensure the application is connected to your local MySQL server (localhost)
-- User creation requires MySQL root privileges
-
+- 
 ---
 
 ## SQL SCRIPT
