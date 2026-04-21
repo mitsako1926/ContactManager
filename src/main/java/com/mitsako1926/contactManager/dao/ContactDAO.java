@@ -387,7 +387,7 @@ public final class ContactDAO {
     
     
     
-    //NOT USED YET
+    //NOT USED YET THESE ARE FOR FILTERS
     
     
     
@@ -441,31 +441,6 @@ public final class ContactDAO {
     }
     
     
-    
-    public List<Contact> getContactsByPhonePrefix(String prefix){
-    	
-    	List<Contact> list = new ArrayList<Contact>();
-		
-    	String sql = "SELECT * FROM contacts WHERE phone LIKE ?";
-
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setString(1, prefix.trim() + "%");
-
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    list.add(mapResultSetToContact(rs));
-                }
-            }
-	                
-	    } catch (SQLException e) {
-	        System.out.println("Error retrieving contacts by phone prefix");
-	    }
-	    	
-        return list;
-    	
-    }
 
 
 

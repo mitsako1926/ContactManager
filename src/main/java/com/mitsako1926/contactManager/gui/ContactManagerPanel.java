@@ -12,6 +12,7 @@ public final class ContactManagerPanel extends JPanel{
 
 	
 	public ContactManagerPanel(ContactService service) {
+		
 		setPreferredSize(new Dimension(700,500));
 		setLayout(new BorderLayout());
 		setOpaque(true);
@@ -27,5 +28,9 @@ public final class ContactManagerPanel extends JPanel{
 		add(sideBarPanel, BorderLayout.WEST);
 		add(centerPanel, BorderLayout.CENTER);
 		add(rightPanel, BorderLayout.EAST);
+		
 	}
+	
+	
+	
 }

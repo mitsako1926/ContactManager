@@ -2,14 +2,9 @@ package com.mitsako1926.contactManager.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.RenderingHints;
-import java.awt.geom.Ellipse2D;
-import java.awt.image.BufferedImage;
 import java.nio.file.Files;
 import java.nio.file.Path;
-
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -21,9 +16,11 @@ import com.mitsako1926.contactManager.model.Contact;
 
 public final class ContactListRenderer extends JPanel implements ListCellRenderer<Contact> {
 
+	
     private final JLabel iconLabel = new JLabel();
     private final JLabel nameLabel = new JLabel();
 
+    
     
     public ContactListRenderer() {
         setLayout(new BorderLayout(10, 0));
@@ -31,6 +28,12 @@ public final class ContactListRenderer extends JPanel implements ListCellRendere
 
         add(iconLabel, BorderLayout.WEST);
         add(nameLabel, BorderLayout.CENTER);
+    }
+    
+    
+    
+    public ContactListRenderer(int id) {
+        
     }
     
     
@@ -54,6 +57,7 @@ public final class ContactListRenderer extends JPanel implements ListCellRendere
         setOpaque(true);
         
         return this;
+        
     }
 
     
@@ -63,10 +67,22 @@ public final class ContactListRenderer extends JPanel implements ListCellRendere
     
     
     private ImageIcon loadIcon(Contact contact) {
-        ImageIcon icon;
+        ImageIcon icon = null;
 
+        icon = helperLoadIcon(contact, icon);
         
-        String path = contact.getImagePath();
+
+        Image scaled = icon.getImage().getScaledInstance(28, 28, Image.SCALE_SMOOTH);
+        
+        
+        return new ImageIcon(scaled);
+        
+    }
+    
+    
+    
+    public ImageIcon helperLoadIcon(Contact contact, ImageIcon icon) {
+    	String path = contact.getImagePath();
 
         if (path != null && !path.isBlank() && path.startsWith("/images")) {
             icon = new ImageIcon(getClass().getResource(contact.getImagePath()));
@@ -85,11 +101,9 @@ public final class ContactListRenderer extends JPanel implements ListCellRendere
         else {
             icon = new ImageIcon(getClass().getResource("/images/users/user.png"));
         }
-
-        Image scaled = icon.getImage().getScaledInstance(28, 28, Image.SCALE_SMOOTH);
         
+        return icon;
         
-        return new ImageIcon(scaled);
     }
     
     

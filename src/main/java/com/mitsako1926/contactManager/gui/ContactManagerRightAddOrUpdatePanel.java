@@ -6,18 +6,13 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -31,7 +26,8 @@ import javax.swing.JTextField;
 import com.mitsako1926.contactManager.model.Contact;
 import com.mitsako1926.contactManager.service.ContactService;
 
-public final class ContactManagerRightAddPanel extends JPanel{
+public final class ContactManagerRightAddOrUpdatePanel extends JPanel{
+	
 	
 	private final JButton imageButton, addOrUpdateButton;
 	
@@ -45,18 +41,26 @@ public final class ContactManagerRightAddPanel extends JPanel{
 
 	private final List<JTextField> textFieldList = new ArrayList<JTextField>();
 	
-	public ContactManagerRightAddPanel() {
+	
+	
+	public ContactManagerRightAddOrUpdatePanel() {
 		setPreferredSize(new Dimension(250,500));		
 		setLayout(new BorderLayout());
 		setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
+		
+		
 		
 		//UPDATE USER IMAGE
 		iconUpdateUser = new ImageIcon(getClass().getResource("/images/icons/update.png"));
 		imgUpdateUser = iconUpdateUser.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
 		
-		//USER IMAGE
+		
+		
+		//ADD USER ICON IMAGE
 		iconAddUser = new ImageIcon(getClass().getResource("/images/icons/add-user-icon.png"));
 		imgAddUser = iconAddUser.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+		
+		
 		
 		JPanel imagePanel = new JPanel();
 		imagePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -64,14 +68,16 @@ public final class ContactManagerRightAddPanel extends JPanel{
 		imagePanel.setBackground(Color.decode("#F7F9FC"));
 		imagePanel.setPreferredSize(new Dimension(100,80));
 		
+		
 		imageButton = new JButton(new ImageIcon(imgAddUser));
 		customizeImageButton(imageButton);
+		
 		
 		imagePanel.add(imageButton, BorderLayout.CENTER);
 		
 		
-		//ALL INFORMATION		
 		
+		//ALL INFORMATION		
 		JPanel infoPanel = new JPanel();
 		infoPanel.setOpaque(true);
 		infoPanel.setBackground(Color.decode("#F7F9FC"));
@@ -84,12 +90,11 @@ public final class ContactManagerRightAddPanel extends JPanel{
 		infoPanel.add(createRow("Company"));
 		infoPanel.add(createRow("Favorite"));
 		infoPanel.add(createRow("Notes"));
-				
+			
+		
 		notesArea = new JTextArea(5, 20);
-		notesArea.setLineWrap(true);
-		notesArea.setText("");
-		notesArea.setWrapStyleWord(true);
-		notesArea.setFont(new Font("Arial", Font.BOLD, 12));
+		customizeTextArea(notesArea);
+		
 		
 		JScrollPane scrollPane = new JScrollPane(notesArea);
 		scrollPane.setPreferredSize(new Dimension(250,110));
@@ -100,23 +105,30 @@ public final class ContactManagerRightAddPanel extends JPanel{
 			    )
 			);
 		
+		
 		infoPanel.add(scrollPane);
 		
-		//PANEL ADD BUTTON
+		
+		
+		//PANEL ADD/UPDATE BUTTON
 		JPanel panelAdd = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		panelAdd.setPreferredSize(new Dimension(250,50));
 		panelAdd.setBackground(Color.decode("#F7F9FC"));
 		
+		
 		iconAdd = new ImageIcon(getClass().getResource("/images/icons/add.png"));
 		imgAdd = iconAdd.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+		
 		
 		addOrUpdateButton = new JButton("Add",new ImageIcon(imgAdd));
 		customizeAddButton(addOrUpdateButton);
 		
 		
 		panelAdd.add(addOrUpdateButton);
-		//ADD EVERYTHING TO THE MAIN PANEL
 		
+		
+		
+		//ADD EVERYTHING TO THE MAIN PANEL
 		add(imagePanel,BorderLayout.NORTH);
 		add(infoPanel,BorderLayout.CENTER);
 		add(panelAdd,BorderLayout.SOUTH);
@@ -143,8 +155,7 @@ public final class ContactManagerRightAddPanel extends JPanel{
 			}
 			
 		}else if(e.getSource()==addOrUpdateButton) {
-			service.addOrUpdateContactToDB(new ArrayList<JTextField>(textFieldList), notesArea.getText(),addOrUpdateButton.getText());
-			
+			service.addOrUpdateContactToDB(new ArrayList<JTextField>(textFieldList), notesArea.getText(), addOrUpdateButton.getText());
 		}
 		
 	}
@@ -160,13 +171,13 @@ public final class ContactManagerRightAddPanel extends JPanel{
 		
 		addOrUpdateButton.setText("Add");
 		addOrUpdateButton.setIcon(new ImageIcon(imgAdd));
+		
 	}
 	
 	
 	
 	private JPanel createRow(String text) {
 	    
-		
 		JPanel row = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 2));
 	    row.setBackground(Color.decode("#F7F9FC"));
 
@@ -188,9 +199,18 @@ public final class ContactManagerRightAddPanel extends JPanel{
 	    row.add(field);
 
 	    return row;
+	    
 	}
 
-
+	
+	
+	private void customizeTextArea(JTextArea text) {
+		text.setLineWrap(true);
+		text.setText("");
+		text.setWrapStyleWord(true);
+		text.setFont(new Font("Arial", Font.BOLD, 12));
+	}
+	
 	
 	
 	private void customizeAddButton(JButton button) {
@@ -200,12 +220,14 @@ public final class ContactManagerRightAddPanel extends JPanel{
 		button.setFocusPainted(false);
 		button.setPreferredSize(new Dimension(80,35));
 		button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		
 		button.setBorder(
 			    BorderFactory.createCompoundBorder(
 			        BorderFactory.createMatteBorder(1, 1, 1, 1, Color.decode("#D6DEE8")),
 			        BorderFactory.createEmptyBorder(0, 10, 0, 0)
 			    )
 			);
+		
 		button.setBorderPainted(true);
 		button.setContentAreaFilled(true);
 		button.setOpaque(true);
@@ -220,6 +242,18 @@ public final class ContactManagerRightAddPanel extends JPanel{
 
 			
 			
+		});
+		
+		button.addMouseListener(new MouseAdapter() {
+		    @Override
+		    public void mouseEntered(MouseEvent e) {
+		    	button.setBackground(new Color(220,220,220));
+		    }
+
+		    @Override
+		    public void mouseExited(MouseEvent e) {
+		    	button.setBackground(new Color(240,240,240));
+		    }
 		});
 		
 	}
@@ -254,36 +288,15 @@ public final class ContactManagerRightAddPanel extends JPanel{
 			}
 			
 		});
+		
 	}
 
 	
 	
-	private final Path USER_IMAGES_DIR = Path.of(System.getProperty("user.home"), "ContactManager", "user-images");
-
-	
-	
 	public void setContactState(Contact contact) {
-		ImageIcon iconUser;
+		ImageIcon iconUser = null;
 		
-		String path = contact.getImagePath();
-
-        if (path != null && !path.isBlank() && path.startsWith("/images")) {
-            iconUser = new ImageIcon(getClass().getResource(path));
-        
-        }else if (path != null && path.startsWith("user-images")) {
-            String fileName = path.substring("user-images/".length());
-            Path p = USER_IMAGES_DIR.resolve(fileName);
-
-            if (Files.exists(p)) {
-                iconUser = new ImageIcon(p.toString());
-            } else {
-                iconUser = new ImageIcon(getClass().getResource("/images/users/user.png"));
-            }
-        } 
-        
-        else {
-            iconUser = new ImageIcon(getClass().getResource("/images/users/user.png"));
-        }
+		iconUser = new ContactListRenderer(1).helperLoadIcon(contact, iconUser);
 
         Image scaled = iconUser.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 		

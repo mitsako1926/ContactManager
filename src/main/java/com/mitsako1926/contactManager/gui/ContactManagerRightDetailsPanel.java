@@ -6,12 +6,9 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -28,8 +25,7 @@ public final class ContactManagerRightDetailsPanel extends JPanel{
 								     " Email : "," Company : "," Favorite : "," Notes :"
 									};
 
-	JLabel imageLabel;
-	JPanel imagePanel;
+	private final JLabel imageLabel;
 	
 	private Contact contact;
 	
@@ -47,40 +43,61 @@ public final class ContactManagerRightDetailsPanel extends JPanel{
 		ImageIcon iconUser = new ImageIcon(getClass().getResource("/images/users/user.png"));
 		Image imgUser = iconUser.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 		
-		imagePanel = new JPanel();
-		imagePanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 1, Color.decode("#D6DEE8")));
-		imagePanel.setLayout(new BorderLayout());
-		imagePanel.setOpaque(true);
-		imagePanel.setBackground(Color.decode("#F7F9FC"));
-		imagePanel.setPreferredSize(new Dimension(100,80));
+		JPanel imagePanel = new JPanel();
+		customizePanel(imagePanel);
 		
 		imageLabel = new JLabel(new ImageIcon(imgUser));
+		
 		imagePanel.add(imageLabel, BorderLayout.CENTER);
+		
 		
 		
 		//ALL INFORMATION
 		JPanel labelsPanel = new JPanel(new GridLayout(labels.length, 1, 5, 2));
+		
 		labelsPanel.setBackground(Color.decode("#F7F9FC"));
 		labelsPanel.setOpaque(true);
+		
 		Arrays.stream(labels).map(JLabel::new).forEach(label -> {customizeLabel(label); labelsPanel.add(label);});
+		
 		
 		
 		//NOTES AREA 
 		
 		notesArea = new JTextArea(5, 20);
-		notesArea.setLineWrap(true);
-		notesArea.setText("");
-		notesArea.setWrapStyleWord(true);
-		notesArea.setFont(new Font("Arial", Font.BOLD, 12));
-		notesArea.setEditable(false);
+		customizeTextArea(notesArea);
 		
 		JScrollPane scrollPane = new JScrollPane(notesArea);
 		scrollPane.setPreferredSize(new Dimension(250,110));
 		scrollPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		
+		
+		
+		//ADD EVERYTHING TO THE MAIN PANEL
 		add(imagePanel,BorderLayout.NORTH);
 		add(labelsPanel,BorderLayout.CENTER);
 		add(scrollPane,BorderLayout.SOUTH);
+		
+	}
+	
+	
+	private void customizeTextArea(JTextArea area) {
+		area.setLineWrap(true);
+		area.setText("");
+		area.setWrapStyleWord(true);
+		area.setFont(new Font("Arial", Font.BOLD, 12));
+		area.setEditable(false);
+		
+	}
+	
+	
+	
+	private void customizePanel(JPanel panel) {
+		panel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 1, Color.decode("#D6DEE8")));
+		panel.setLayout(new BorderLayout());
+		panel.setOpaque(true);
+		panel.setBackground(Color.decode("#F7F9FC"));
+		panel.setPreferredSize(new Dimension(100,80));
 		
 	}
 	
@@ -98,40 +115,19 @@ public final class ContactManagerRightDetailsPanel extends JPanel{
 		}
 		
 		labelList.add(label);
+		
 	}
-	
-	
-	
-	private final Path USER_IMAGES_DIR = Path.of(System.getProperty("user.home"), "ContactManager", "user-images");
-	
+		
 	
 	
 	public void setContact(Contact contact) {
 		this.contact = contact;
 		
-		ImageIcon icon;
+		ImageIcon icon = null;
 		
 		if(contact==null)return;	
 		
-		String path = contact.getImagePath();
-
-        if (path != null && !path.isBlank() && path.startsWith("/images")) {
-            icon = new ImageIcon(getClass().getResource(contact.getImagePath()));
-        
-        }else if (path != null && path.startsWith("user-images")) {
-        	String fileName = path.substring("user-images/".length());
-            Path p = USER_IMAGES_DIR.resolve(fileName);
-
-            if (Files.exists(p)) {
-                icon = new ImageIcon(p.toString());
-            } else {
-                icon = new ImageIcon(getClass().getResource("/images/users/user.png"));
-            }
-        } 
-        
-        else {
-            icon = new ImageIcon(getClass().getResource("/images/users/user.png"));
-        }
+		icon = new ContactListRenderer(1).helperLoadIcon(contact, icon);
 		
         Image imgUser = icon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 		
@@ -152,5 +148,8 @@ public final class ContactManagerRightDetailsPanel extends JPanel{
 	public Contact getContact() {
 		return contact;
 	}
+	
+	
+	
 	
 }
