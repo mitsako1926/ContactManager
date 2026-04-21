@@ -124,9 +124,23 @@ public final class ContactManagerCenterPanel extends JPanel{
 	
 	
 	private void refreshList() {
+	    Contact previouslySelected = list != null ? list.getSelectedValue() : null;
+
 	    model.clear();
 	    model.addAll(service.getContacts());
-	    labelContacts.setText("    All Contacts(" + service.getContacts().size() +")");
+
+	    if (previouslySelected != null) {
+	        for (int i = 0; i < model.size(); i++) {
+	            Contact c = model.get(i);
+	            if (c.equals(previouslySelected)) {
+	                list.setSelectedIndex(i);
+	                list.ensureIndexIsVisible(i);
+	                break;
+	            }
+	        }
+	    }
+
+	    labelContacts.setText("    All Contacts(" + service.getContacts().size() + ")");
 	}
 	
 	

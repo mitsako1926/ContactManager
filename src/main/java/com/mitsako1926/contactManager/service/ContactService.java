@@ -89,8 +89,7 @@ public final class ContactService {
 		
 	}
 	
-	//xanw to selected meta apo add/update panta
-	//null pointer an kanw edit update edit update(epidh xanw to selected)
+
 	
 //	private void setOriginalButton() {
 //		JButton button = sideBarPanel.getSelectedButton();
@@ -112,6 +111,8 @@ public final class ContactService {
 //			}
 //		}
 //	}
+	
+	
 	
 	public void searchContacts(String keyword){
 		if(keyword.isBlank()&&sideBarPanel.getSelectedButton().getText().equals("All Contacts")) {
@@ -379,6 +380,10 @@ public final class ContactService {
 		
 		if(contactToUpdate==null) return;
 		
+		if(!contactToUpdate.equals(centerPanel.getSelectedContact())) {
+			return;
+		}
+				
 		rightPanel.setAddToUpdatePanel(contactToUpdate);
 		rightPanel.showAdd();
 		
@@ -387,14 +392,18 @@ public final class ContactService {
 	
 	
 	public void deleteContact() {		
-		Contact contact = rightPanel.getContact();
+		Contact contactToDelete = rightPanel.getContact();
 		
-		if(contact==null)return;
+		if(contactToDelete==null) return;
 		
-		Object selected = optionPaneDelete(contact);
+		if(!contactToDelete.equals(centerPanel.getSelectedContact())) {
+			return;
+		}
+				
+		Object selected = optionPaneDelete(contactToDelete);
 
 		if ("Delete".equals(selected)) {
-		    contactDAO.deleteContact(contact.getId());
+		    contactDAO.deleteContact(contactToDelete.getId());
 		    
 		    loadAllContacts();
 		    
@@ -415,14 +424,19 @@ public final class ContactService {
 	
 	
 	public void setFavorite() {
-		Contact contact = centerPanel.getSelectedContact();
+		Contact contactToFavorite = rightPanel.getContact();
 		
-		if(contact==null)return;
+		if(contactToFavorite==null) return;
 		
-		contactDAO.setFavorite(contact.getId(), !contact.isFavorite());
+		if(!contactToFavorite.equals(centerPanel.getSelectedContact())) {
+			return;
+		}
+				
+		contactDAO.setFavorite(contactToFavorite.getId(), !contactToFavorite.isFavorite());
 		
-		contact.setFavorite(!contact.isFavorite());
-		getDetails(contact);
+		contactToFavorite.setFavorite(!contactToFavorite.isFavorite());
+		
+		getDetails(contactToFavorite);
 		
 	}
 	
