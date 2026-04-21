@@ -127,7 +127,7 @@ public final class ContactManagerTopPanel extends JPanel{
 	private void onSearchChanged() {
 	    String text = searchField.getText();
 	    
-	    if(text.equals("Search...")||text.isBlank()) return;
+	    if(text.equals("Search...")) return;
 	    	
 	    service.searchContacts(text);
 	    
