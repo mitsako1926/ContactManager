@@ -92,6 +92,7 @@ C:\Users\<your-user>\ContactManager\user-images\
 ## ⚠️ Warning
 
 - Make sure your database is running (via WAMP, XAMPP, or similar)
+- Make sure you have Maven installed (run this at terminal: mvn --version)
 - Import the provided SQL script into your database before running the application
 - Ensure the application is connected to your local MySQL server (localhost)
 - User creation requires MySQL root privileges
@@ -177,11 +178,10 @@ and run the `Main` class.
 ---
 
 #### Using the terminal:
-
+Current directory ContactManager
 ```bash
-cd src/main/java
-javac com/mitsako1926/contactManager/Main.java
-java com.mitsako1926.contactManager.Main
+mvn clean compile
+mvn exec:java
 ```
 
 ---
