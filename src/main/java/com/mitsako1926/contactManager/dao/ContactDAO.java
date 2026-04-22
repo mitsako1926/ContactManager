@@ -1,8 +1,5 @@
 package com.mitsako1926.contactManager.dao;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Image;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,17 +8,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JOptionPane;
-
 import com.mitsako1926.contactManager.db.DatabaseConnection;
+import com.mitsako1926.contactManager.gui.DialogUtils;
 import com.mitsako1926.contactManager.model.Contact;
 
 
 public final class ContactDAO {
 
+	
+	private final DialogUtils dialog = new DialogUtils();
+	
 	
 	public List<Contact> getAllContacts() {
 		
@@ -36,7 +32,7 @@ public final class ContactDAO {
 	        while(rs.next()) list.add(mapResultSetToContact(rs));
 	                
 	    } catch (SQLException e) {
-	    	optionPaneInvalid("Error retrieving all contacts");
+	    	dialog.optionPaneError("Error retrieving all contacts");
 	    	System.err.println("Error retrieving all contacts: " + e.getMessage());
 	    }
 	    	
@@ -65,7 +61,7 @@ public final class ContactDAO {
 	        ps.executeUpdate();
 
 	    } catch (SQLException e) {
-	    	optionPaneInvalid("Error adding new contact");
+	    	dialog.optionPaneError("Error adding new contact");
 	    	System.err.println("Error adding new contact :" + e.getMessage());
 	    }
 	    
@@ -84,7 +80,7 @@ public final class ContactDAO {
 	        ps.executeUpdate();
 
 	    } catch (SQLException e) {
-	    	optionPaneInvalid("Error deleting a contact");
+	    	dialog.optionPaneError("Error deleting a contact");
 	    	System.err.println("Error deleting a contact: " + e.getMessage());
 	    }
 	    
@@ -105,7 +101,7 @@ public final class ContactDAO {
 	    	while(rs.next()) list.add(mapResultSetToContact(rs));
 	        
 	    } catch (SQLException e) {
-	    	optionPaneInvalid("Error retrieving favorite contacts");
+	    	dialog.optionPaneError("Error retrieving favorite contacts");
 	    	System.err.println("Error retrieving favorite contacts: " + e.getMessage());
 	    }
 	    	
@@ -128,7 +124,7 @@ public final class ContactDAO {
    	        ps.executeUpdate();
 
    	    } catch (SQLException e) {
-   	    	optionPaneInvalid("Error setting a contact as favorite");
+   	    	dialog.optionPaneError("Error setting a contact as favorite");
    	    	System.err.println("Error setting a contact as favorite: " + e.getMessage());
    	    }
     	
@@ -156,7 +152,7 @@ public final class ContactDAO {
    	        ps.executeUpdate();
 
    	    } catch (SQLException e) {
-   	    	optionPaneInvalid("Error updating contact");
+   	    	dialog.optionPaneError("Error updating contact");
    	    	System.err.println("Error updating contact: " + e.getMessage());
    	    }
     
@@ -177,7 +173,7 @@ public final class ContactDAO {
 	        while(rs.next()) list.add(mapResultSetToContact(rs));
 	                
 	    } catch (SQLException e) {
-	    	optionPaneInvalid("Error retrieving all contacts order by first name");
+	    	dialog.optionPaneError("Error retrieving all contacts order by first name");
 	    	System.err.println("Error retrieving all contacts order by first name: " + e.getMessage());
 	    }
 	    	
@@ -200,7 +196,7 @@ public final class ContactDAO {
 	        while(rs.next()) list.add(mapResultSetToContact(rs));
 	                
 	    } catch (SQLException e) {
-	    	optionPaneInvalid("Error retrieving favorite contacts order by first name");
+	    	dialog.optionPaneError("Error retrieving favorite contacts order by first name");
 	    	System.err.println("Error retrieving favorite contacts order by first name: " + e.getMessage());
 	    }
 	    	
@@ -222,7 +218,7 @@ public final class ContactDAO {
 	        while(rs.next()) list.add(mapResultSetToContact(rs));
 	                
 	    } catch (SQLException e) {
-	    	optionPaneInvalid("Error retrieving all contacts order by last name");
+	    	dialog.optionPaneError("Error retrieving all contacts order by last name");
 	    	System.err.println("Error retrieving all contacts order by last name: " + e.getMessage());
 	    }
 	    	
@@ -245,7 +241,7 @@ public final class ContactDAO {
 	        while(rs.next()) list.add(mapResultSetToContact(rs));
 	                
 	    } catch (SQLException e) {
-	    	optionPaneInvalid("Error retrieving favorite contacts order by last name");
+	    	dialog.optionPaneError("Error retrieving favorite contacts order by last name");
 	    	System.err.println("Error retrieving favorite contacts order by last name: " + e.getMessage());
 	    }
 	    	
@@ -268,7 +264,7 @@ public final class ContactDAO {
 	        while(rs.next()) list.add(mapResultSetToContact(rs));
 	                
 	    } catch (SQLException e) {
-	    	optionPaneInvalid("Error retrieving all contacts (favorites first)");
+	    	dialog.optionPaneError("Error retrieving all contacts (favorites first)");
 	    	System.err.println("Error retrieving all contacts (favorites first): " + e.getMessage());
 	    }
 	    	
@@ -294,7 +290,7 @@ public final class ContactDAO {
 	        }	    	
 	        
 	    } catch (SQLException e) {
-	    	optionPaneInvalid("Error retrieving contact");
+	    	dialog.optionPaneError("Error retrieving contact");
 	    	System.err.println("Error retrieving contact: " + e.getMessage());
 	    }
 	    	
@@ -335,7 +331,7 @@ public final class ContactDAO {
 	        }
 	    		                
 	    } catch (SQLException e) {
-	    	optionPaneInvalid("Error searching contacts");
+	    	dialog.optionPaneError("Error searching contacts");
 	    	System.err.println("Error searching contacts: " + e.getMessage());
 	    }
 	    	
@@ -359,7 +355,7 @@ public final class ContactDAO {
 	        
 	                
 	    } catch (SQLException e) {
-	    	optionPaneInvalid("Error checking phone number");
+	    	dialog.optionPaneError("Error checking phone number");
 	    	System.err.println("Error checking phone number: " + e.getMessage());
 	    }
 	    	
@@ -384,7 +380,7 @@ public final class ContactDAO {
 	        
 	                
 	    } catch (SQLException e) {
-	    	optionPaneInvalid("Error checking email address");
+	    	dialog.optionPaneError("Error checking email address");
 	    	System.err.println("Error checking email address: " + e.getMessage());
 	    }
 	    	
@@ -407,49 +403,6 @@ public final class ContactDAO {
             rs.getString("image_path")
         );
     }
-    
-    
-    
-    private void optionPaneInvalid(String text) {
-		
-		String message = "<html><body style='font-size:11px;'>"
-		        		+ text + "</b>"+ "</body></html>";
-
-		ImageIcon originalIcon = new ImageIcon(getClass().getResource("/images/icons/warning.png"));
-	    Image img = originalIcon.getImage().getScaledInstance(12, 12, Image.SCALE_SMOOTH);
-		
-		JOptionPane optionPane = new JOptionPane(
-		    message,
-		    JOptionPane.PLAIN_MESSAGE,
-		    JOptionPane.YES_NO_OPTION,
-		    null,
-		    new Object[]{"OK"}
-		);
-		
-		JDialog dialog = optionPane.createDialog("Invalid Input");
-		
-		dialog.setIconImage(img);
-		
-		removeFocus(optionPane);
-
-		dialog.setVisible(true);
-		
-	}
-    
-    
-    
-    private void removeFocus(Component comp) {
-	    if (comp instanceof JButton btn) {
-	        btn.setFocusable(false);
-	    }
-
-	    if (comp instanceof Container container) {
-	        for (Component child : container.getComponents()) {
-	            removeFocus(child);
-	        }
-	    }
-	    
-	}
     
     
     

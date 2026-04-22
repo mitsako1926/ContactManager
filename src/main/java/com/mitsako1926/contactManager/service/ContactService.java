@@ -22,6 +22,7 @@ import com.mitsako1926.contactManager.dao.ContactDAO;
 import com.mitsako1926.contactManager.gui.ContactManagerCenterPanel;
 import com.mitsako1926.contactManager.gui.ContactManagerRightPanel;
 import com.mitsako1926.contactManager.gui.ContactManagerSideBarPanel;
+import com.mitsako1926.contactManager.gui.DialogUtils;
 import com.mitsako1926.contactManager.model.Contact;
 
 public final class ContactService {
@@ -30,7 +31,9 @@ public final class ContactService {
 	
 	private final ContactDAO contactDAO = new ContactDAO();
 	
-	private ContactManagerSideBarPanel sideBarPanel;
+	private final DialogUtils dialog = new DialogUtils();
+	
+	private  ContactManagerSideBarPanel sideBarPanel;
 	
 	private ContactManagerCenterPanel centerPanel;
 		
@@ -190,7 +193,7 @@ public final class ContactService {
 	    String isValid = inputValidation(firstName, lastName, phone, email, company, favorite, addOrUpdate);
 	    
 	    if(isValid!=null) {
-	    	optionPaneInvalid(isValid);	
+	    	dialog.optionPaneInvalid(isValid);	
 	    	return;
 	    }
 	    
@@ -389,7 +392,7 @@ public final class ContactService {
 			return;
 		}
 				
-		Object selected = optionPaneDelete(contactToDelete);
+		Object selected = dialog.optionPaneDelete(contactToDelete);
 
 		if ("Delete".equals(selected)) {
 		    contactDAO.deleteContact(contactToDelete.getId());
@@ -553,78 +556,14 @@ public final class ContactService {
 	
 	
 	
-	private Object optionPaneDelete(Contact contact) {
-		String fullName = contact.toString();
-		
-		String message = "<html><body style='font-size:12px;'>"
-		        + "Are you sure you want to delete<br><b>" + fullName + "</b>?"
-		        + "</body></html>";
-
-		ImageIcon originalIcon = new ImageIcon(getClass().getResource("/images/icons/bin.png"));
-	    Image img = originalIcon.getImage().getScaledInstance(12, 12, Image.SCALE_SMOOTH);
-		
-		JOptionPane optionPane = new JOptionPane(
-		    message,
-		    JOptionPane.PLAIN_MESSAGE,
-		    JOptionPane.YES_NO_OPTION,
-		    null,
-		    new Object[]{"Delete", "Cancel"},
-		    "Cancel"
-		);
-		
-		JDialog dialog = optionPane.createDialog("Delete Contact");
-		dialog.setIconImage(img);
-		
-		removeFocus(optionPane);
-
-		dialog.setVisible(true);
-
-		return optionPane.getValue();
-		
-	}
 	
 	
 	
-	private void optionPaneInvalid(String text) {
-		
-		String message = "<html><body style='font-size:11px;'>"
-		        		+ text + "</b>"+ "</body></html>";
-
-		ImageIcon originalIcon = new ImageIcon(getClass().getResource("/images/icons/warning.png"));
-	    Image img = originalIcon.getImage().getScaledInstance(12, 12, Image.SCALE_SMOOTH);
-		
-		JOptionPane optionPane = new JOptionPane(
-		    message,
-		    JOptionPane.PLAIN_MESSAGE,
-		    JOptionPane.YES_NO_OPTION,
-		    null,
-		    new Object[]{"OK"}
-		);
-		
-		JDialog dialog = optionPane.createDialog("Invalid Input");
-		
-		dialog.setIconImage(img);
-		
-		removeFocus(optionPane);
-
-		dialog.setVisible(true);
-		
-	}
 	
 	
 	
-	private void removeFocus(Component comp) {
-	    if (comp instanceof JButton btn) {
-	        btn.setFocusable(false);
-	    }
+	
 
-	    if (comp instanceof Container container) {
-	        for (Component child : container.getComponents()) {
-	            removeFocus(child);
-	        }
-	    }
-	    
-	}
 	
 	
 	
