@@ -40,7 +40,7 @@ public final class ContactManagerRightAddOrUpdatePanel extends JPanel{
 	private Image imgAddUser,imgUpdateUser,imgAdd;
 
 	private final List<JTextField> textFieldList = new ArrayList<JTextField>();
-	
+		
 	
 	
 	public ContactManagerRightAddOrUpdatePanel() {
@@ -294,6 +294,7 @@ public final class ContactManagerRightAddOrUpdatePanel extends JPanel{
 	
 	
 	public void setContactState(Contact contact) {
+		
 		ImageIcon iconUser = null;
 		
 		iconUser = new ContactListRenderer(1).helperLoadIcon(contact, iconUser);

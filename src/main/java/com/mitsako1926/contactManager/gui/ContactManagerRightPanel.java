@@ -83,6 +83,7 @@ public final class ContactManagerRightPanel extends JPanel{
 			return null;
 		}
 		return detailsPanel.getContact();
+		
 	}
 	
 	

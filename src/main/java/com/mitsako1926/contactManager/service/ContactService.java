@@ -9,13 +9,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -40,7 +36,7 @@ public final class ContactService {
 		
 	private ContactManagerRightPanel rightPanel;
 	
-	private List<Contact> contacts = contactDAO.getAllContacts();;
+	private List<Contact> contacts = contactDAO.getAllContacts();
 	
 	
 	public void setSideBarPanel(ContactManagerSideBarPanel sideBarPanel) {
@@ -182,7 +178,7 @@ public final class ContactService {
 	
 	
 	
-	public void addOrUpdateContactToDB(ArrayList<JTextField> list, String notes, String addOrUpdate) {
+	public void addOrUpdateContactToDB(List<JTextField> list, String notes, String addOrUpdate) {
 		
 		String firstName = list.get(0).getText().trim();
 	    String lastName  = list.get(1).getText().trim();
@@ -226,7 +222,7 @@ public final class ContactService {
 			selectedImagePath = null;
 			
 	    }else if(addOrUpdate.contains("Update")){
-	    	Contact contactWithId = centerPanel.getSelectedContact();
+	    	Contact contactWithId = rightPanel.getContact();
 
 	    	contact.setId(contactWithId.getId());
 	    	
@@ -321,7 +317,7 @@ public final class ContactService {
 	    }
 	    
 	    if(addOrUpdate.equals("Update")) {
-	    	Contact contact = centerPanel.getSelectedContact();
+	    	Contact contact = rightPanel.getContact();
 		    
 		    if(!contact.getEmail().trim().equals(email)) {
 		    	if(contactDAO.existsByEmail(email) && !email.isBlank()) {
