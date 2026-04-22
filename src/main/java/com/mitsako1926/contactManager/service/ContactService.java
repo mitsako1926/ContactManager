@@ -184,12 +184,12 @@ public final class ContactService {
 	
 	public void addOrUpdateContactToDB(ArrayList<JTextField> list, String notes, String addOrUpdate) {
 		
-		String firstName = list.get(0).getText();
-	    String lastName  = list.get(1).getText();
-	    String phone     = list.get(2).getText();
-	    String email     = list.get(3).getText();
-	    String company   = list.get(4).getText();
-	    String favorite  = list.get(5).getText();
+		String firstName = list.get(0).getText().trim();
+	    String lastName  = list.get(1).getText().trim();
+	    String phone     = list.get(2).getText().trim();
+	    String email     = list.get(3).getText().trim();
+	    String company   = list.get(4).getText().trim();
+	    String favorite  = list.get(5).getText().trim();
 
 	    String isValid = inputValidation(firstName, lastName, phone, email, company, favorite, addOrUpdate);
 	    
@@ -280,13 +280,6 @@ public final class ContactService {
 	
 	
 	private String inputValidation(String firstName, String lastName, String phone, String email, String company, String favorite, String addOrUpdate) {
-
-	    firstName = firstName.trim();
-	    lastName = lastName.trim();
-	    phone = phone.trim();
-	    email = email.trim();
-	    company = company.trim();
-	    favorite = favorite.trim();
 
 	    if (firstName.isEmpty()) return "First name is required.";
 	    if (lastName.isEmpty()) return "Last name is required.";

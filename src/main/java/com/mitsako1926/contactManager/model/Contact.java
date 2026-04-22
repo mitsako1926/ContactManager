@@ -1,6 +1,6 @@
 package com.mitsako1926.contactManager.model;
 
-public final class Contact {
+public class Contact {
 
    
 	private int id;
@@ -84,7 +84,7 @@ public final class Contact {
     
     @Override
     public String toString() {
-        return firstName + " " + lastName;
+        return firstName.trim() + " " + lastName.trim();
     }
     
     
@@ -96,10 +96,18 @@ public final class Contact {
 
         Contact c = (Contact) o;
         
+        if (this.id == 0 || c.id == 0) return false;
+        
         return id==c.id;
     }
 
     
     
+    @Override
+    public int hashCode() {
+    	return Integer.hashCode(id);
+    }
+    
+ 
     
 }
