@@ -134,7 +134,7 @@ Use the default MySQL configuration:
 
 ## 💾 Installation
 
-Follow these steps to clone and run the calculator locally. This guide works for Linux, macOS, and Windows (via Git Bash or WSL).
+Follow these steps to clone and run the ContactManager locally. This guide works for Linux, macOS, and Windows (via Git Bash or WSL).
 
 ### 1. Clone the repository
 
