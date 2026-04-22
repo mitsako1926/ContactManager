@@ -15,9 +15,7 @@ import com.mitsako1926.contactManager.model.Contact;
 
 public final class ContactDAO {
 
-	
-	private final DialogUtils dialog = new DialogUtils();
-	
+		
 	
 	public List<Contact> getAllContacts() {
 		
@@ -32,7 +30,7 @@ public final class ContactDAO {
 	        while(rs.next()) list.add(mapResultSetToContact(rs));
 	                
 	    } catch (SQLException e) {
-	    	dialog.optionPaneError("Error retrieving all contacts");
+	    	DialogUtils.optionPaneError("Error retrieving all contacts");
 	    	System.err.println("Error retrieving all contacts: " + e.getMessage());
 	    }
 	    	
@@ -61,7 +59,7 @@ public final class ContactDAO {
 	        ps.executeUpdate();
 
 	    } catch (SQLException e) {
-	    	dialog.optionPaneError("Error adding new contact");
+	    	DialogUtils.optionPaneError("Error adding new contact");
 	    	System.err.println("Error adding new contact :" + e.getMessage());
 	    }
 	    
@@ -80,7 +78,7 @@ public final class ContactDAO {
 	        ps.executeUpdate();
 
 	    } catch (SQLException e) {
-	    	dialog.optionPaneError("Error deleting a contact");
+	    	DialogUtils.optionPaneError("Error deleting a contact");
 	    	System.err.println("Error deleting a contact: " + e.getMessage());
 	    }
 	    
@@ -101,7 +99,7 @@ public final class ContactDAO {
 	    	while(rs.next()) list.add(mapResultSetToContact(rs));
 	        
 	    } catch (SQLException e) {
-	    	dialog.optionPaneError("Error retrieving favorite contacts");
+	    	DialogUtils.optionPaneError("Error retrieving favorite contacts");
 	    	System.err.println("Error retrieving favorite contacts: " + e.getMessage());
 	    }
 	    	
@@ -124,7 +122,7 @@ public final class ContactDAO {
    	        ps.executeUpdate();
 
    	    } catch (SQLException e) {
-   	    	dialog.optionPaneError("Error setting a contact as favorite");
+   	    	DialogUtils.optionPaneError("Error setting a contact as favorite");
    	    	System.err.println("Error setting a contact as favorite: " + e.getMessage());
    	    }
     	
@@ -152,7 +150,7 @@ public final class ContactDAO {
    	        ps.executeUpdate();
 
    	    } catch (SQLException e) {
-   	    	dialog.optionPaneError("Error updating contact");
+   	    	DialogUtils.optionPaneError("Error updating contact");
    	    	System.err.println("Error updating contact: " + e.getMessage());
    	    }
     
@@ -173,7 +171,7 @@ public final class ContactDAO {
 	        while(rs.next()) list.add(mapResultSetToContact(rs));
 	                
 	    } catch (SQLException e) {
-	    	dialog.optionPaneError("Error retrieving all contacts order by first name");
+	    	DialogUtils.optionPaneError("Error retrieving all contacts order by first name");
 	    	System.err.println("Error retrieving all contacts order by first name: " + e.getMessage());
 	    }
 	    	
@@ -196,7 +194,7 @@ public final class ContactDAO {
 	        while(rs.next()) list.add(mapResultSetToContact(rs));
 	                
 	    } catch (SQLException e) {
-	    	dialog.optionPaneError("Error retrieving favorite contacts order by first name");
+	    	DialogUtils.optionPaneError("Error retrieving favorite contacts order by first name");
 	    	System.err.println("Error retrieving favorite contacts order by first name: " + e.getMessage());
 	    }
 	    	
@@ -218,7 +216,7 @@ public final class ContactDAO {
 	        while(rs.next()) list.add(mapResultSetToContact(rs));
 	                
 	    } catch (SQLException e) {
-	    	dialog.optionPaneError("Error retrieving all contacts order by last name");
+	    	DialogUtils.optionPaneError("Error retrieving all contacts order by last name");
 	    	System.err.println("Error retrieving all contacts order by last name: " + e.getMessage());
 	    }
 	    	
@@ -241,7 +239,7 @@ public final class ContactDAO {
 	        while(rs.next()) list.add(mapResultSetToContact(rs));
 	                
 	    } catch (SQLException e) {
-	    	dialog.optionPaneError("Error retrieving favorite contacts order by last name");
+	    	DialogUtils.optionPaneError("Error retrieving favorite contacts order by last name");
 	    	System.err.println("Error retrieving favorite contacts order by last name: " + e.getMessage());
 	    }
 	    	
@@ -264,7 +262,7 @@ public final class ContactDAO {
 	        while(rs.next()) list.add(mapResultSetToContact(rs));
 	                
 	    } catch (SQLException e) {
-	    	dialog.optionPaneError("Error retrieving all contacts (favorites first)");
+	    	DialogUtils.optionPaneError("Error retrieving all contacts (favorites first)");
 	    	System.err.println("Error retrieving all contacts (favorites first): " + e.getMessage());
 	    }
 	    	
@@ -290,7 +288,7 @@ public final class ContactDAO {
 	        }	    	
 	        
 	    } catch (SQLException e) {
-	    	dialog.optionPaneError("Error retrieving contact");
+	    	DialogUtils.optionPaneError("Error retrieving contact");
 	    	System.err.println("Error retrieving contact: " + e.getMessage());
 	    }
 	    	
@@ -331,7 +329,7 @@ public final class ContactDAO {
 	        }
 	    		                
 	    } catch (SQLException e) {
-	    	dialog.optionPaneError("Error searching contacts");
+	    	DialogUtils.optionPaneError("Error searching contacts");
 	    	System.err.println("Error searching contacts: " + e.getMessage());
 	    }
 	    	
@@ -355,7 +353,7 @@ public final class ContactDAO {
 	        
 	                
 	    } catch (SQLException e) {
-	    	dialog.optionPaneError("Error checking phone number");
+	    	DialogUtils.optionPaneError("Error checking phone number");
 	    	System.err.println("Error checking phone number: " + e.getMessage());
 	    }
 	    	
@@ -380,7 +378,7 @@ public final class ContactDAO {
 	        
 	                
 	    } catch (SQLException e) {
-	    	dialog.optionPaneError("Error checking email address");
+	    	DialogUtils.optionPaneError("Error checking email address");
 	    	System.err.println("Error checking email address: " + e.getMessage());
 	    }
 	    	

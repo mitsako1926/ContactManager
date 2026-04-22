@@ -13,13 +13,16 @@ import com.mitsako1926.contactManager.model.Contact;
 public final class DialogUtils {
 
 	
-		
-	public void optionPaneError(String text) {
+	private DialogUtils() {}
+	
+	
+	
+	public static void optionPaneError(String text) {
 		
 		String message = "<html><body style='font-size:11px;'>"
-		        		+ text + "</b>"+ "</body></html>";
+                         + text + "</body></html>";
 
-		ImageIcon originalIcon = new ImageIcon(getClass().getResource("/images/icons/warning-red.png"));
+		ImageIcon originalIcon = new ImageIcon(DialogUtils.class.getResource("/images/icons/warning-red.png"));
 	    Image img = originalIcon.getImage().getScaledInstance(12, 12, Image.SCALE_SMOOTH);
 		
 		JOptionPane optionPane = new JOptionPane(
@@ -42,12 +45,12 @@ public final class DialogUtils {
 	
 	
 	
-	public void optionPaneInvalid(String text) {
+	public static void optionPaneInvalid(String text) {
 		
 		String message = "<html><body style='font-size:11px;'>"
-		        		+ text + "</b>"+ "</body></html>";
+                		 + text + "</body></html>";
 
-		ImageIcon originalIcon = new ImageIcon(getClass().getResource("/images/icons/warning.png"));
+		ImageIcon originalIcon = new ImageIcon(DialogUtils.class.getResource("/images/icons/warning.png"));
 	    Image img = originalIcon.getImage().getScaledInstance(12, 12, Image.SCALE_SMOOTH);
 		
 		JOptionPane optionPane = new JOptionPane(
@@ -70,14 +73,14 @@ public final class DialogUtils {
     
     
 	
-    public Object optionPaneDelete(Contact contact) {
+    public static Object optionPaneDelete(Contact contact) {
 		String fullName = contact.toString();
 		
 		String message = "<html><body style='font-size:12px;'>"
 		        + "Are you sure you want to delete<br><b>" + fullName + "</b>?"
 		        + "</body></html>";
 
-		ImageIcon originalIcon = new ImageIcon(getClass().getResource("/images/icons/bin.png"));
+		ImageIcon originalIcon = new ImageIcon(DialogUtils.class.getResource("/images/icons/bin.png"));
 	    Image img = originalIcon.getImage().getScaledInstance(12, 12, Image.SCALE_SMOOTH);
 		
 		JOptionPane optionPane = new JOptionPane(
@@ -102,7 +105,7 @@ public final class DialogUtils {
     
     
     
-    private void removeFocus(Component comp) {
+    private static void removeFocus(Component comp) {
 	    if (comp instanceof JButton btn) {
 	        btn.setFocusable(false);
 	    }

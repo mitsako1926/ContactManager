@@ -20,11 +20,7 @@ public final class ContactService {
 	private String selectedImagePath;
 	
 	private final ContactDAO contactDAO = new ContactDAO();
-	
-	private final DialogUtils dialog = new DialogUtils();
-	
-	private final ImageHandler imageHandler = new ImageHandler();
-	
+			
 	private  ContactManagerSideBarPanel sideBarPanel;
 	
 	private ContactManagerCenterPanel centerPanel;
@@ -111,11 +107,11 @@ public final class ContactService {
 	    if (file != null) {
 	        String fullPath = dir + file;
 
-	        String relativePath = imageHandler.processImage(fullPath);
+	        String relativePath = ImageUtils.processImage(fullPath);
 
 	        selectedImagePath = relativePath;
 
-	        return imageHandler.loadImage(relativePath);
+	        return ImageUtils.loadImage(relativePath);
 	    }
 
 	    return null;
@@ -133,7 +129,7 @@ public final class ContactService {
 			return;
 		}
 				
-		Object selected = dialog.optionPaneDelete(contactToDelete);
+		Object selected = DialogUtils.optionPaneDelete(contactToDelete);
 
 		if ("Delete".equals(selected)) {
 		    contactDAO.deleteContact(contactToDelete.getId());
@@ -232,7 +228,7 @@ public final class ContactService {
 	    String isValid = inputValidation(firstName, lastName, phone, email, company, favorite, addOrUpdate);
 	    
 	    if(isValid!=null) {
-	    	dialog.optionPaneInvalid(isValid);	
+	    	DialogUtils.optionPaneInvalid(isValid);	
 	    	return;
 	    }
 	    

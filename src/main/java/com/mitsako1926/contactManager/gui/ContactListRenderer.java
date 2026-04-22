@@ -11,7 +11,7 @@ import javax.swing.ListCellRenderer;
 import javax.swing.BorderFactory;
 
 import com.mitsako1926.contactManager.model.Contact;
-import com.mitsako1926.contactManager.service.ImageHandler;
+import com.mitsako1926.contactManager.service.ImageUtils;
 
 public final class ContactListRenderer extends JPanel implements ListCellRenderer<Contact> {
 
@@ -20,8 +20,6 @@ public final class ContactListRenderer extends JPanel implements ListCellRendere
     
     private final JLabel nameLabel = new JLabel();
     
-    private final ImageHandler imageHandler = new ImageHandler();
-
     
     
     public ContactListRenderer() {
@@ -61,7 +59,7 @@ public final class ContactListRenderer extends JPanel implements ListCellRendere
     private ImageIcon loadIcon(Contact contact) {
         ImageIcon icon = null;
 
-        icon = imageHandler.helperLoadIcon(contact, icon);
+        icon = ImageUtils.helperLoadIcon(contact, icon);
         
 
         Image scaled = icon.getImage().getScaledInstance(28, 28, Image.SCALE_SMOOTH);

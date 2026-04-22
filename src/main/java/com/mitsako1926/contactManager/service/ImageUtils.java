@@ -10,18 +10,21 @@ import javax.swing.ImageIcon;
 
 import com.mitsako1926.contactManager.model.Contact;
 
-public final class ImageHandler {
+public final class ImageUtils {
 
 
-	private final Path USER_IMAGES_DIR = Path.of(System.getProperty("user.home"), "ContactManager", "user-images");	
+	private static final Path USER_IMAGES_DIR = Path.of(System.getProperty("user.home"), "ContactManager", "user-images");	
 	
 	
+	private ImageUtils() {}
+	
 
-	public ImageIcon helperLoadIcon(Contact contact, ImageIcon icon) {
+	
+	public static ImageIcon helperLoadIcon(Contact contact, ImageIcon icon) {
     	String path = contact.getImagePath();
 
         if (path != null && !path.isBlank() && path.startsWith("/images")) {
-            icon = new ImageIcon(getClass().getResource(contact.getImagePath()));
+            icon = new ImageIcon(ImageUtils.class.getResource(contact.getImagePath()));
         
         }else if (path != null && path.startsWith("user-images")) {
             String fileName = path.substring("user-images/".length());
@@ -30,12 +33,12 @@ public final class ImageHandler {
             if (Files.exists(p)) {
                 icon = new ImageIcon(p.toString());
             } else {
-                icon = new ImageIcon(getClass().getResource("/images/users/user.png"));
+                icon = new ImageIcon(ImageUtils.class.getResource("/images/users/user.png"));
             }
         }
         
         else {
-            icon = new ImageIcon(getClass().getResource("/images/users/user.png"));
+            icon = new ImageIcon(ImageUtils.class.getResource("/images/users/user.png"));
         }
         
         return icon;
@@ -44,10 +47,10 @@ public final class ImageHandler {
 	
 	
 	
-	public ImageIcon loadImage(String path) {
+	public static ImageIcon loadImage(String path) {
 
 	    if (path.startsWith("/images/")) {
-	        return new ImageIcon(getClass().getResource(path));
+	        return new ImageIcon(ImageUtils.class.getResource(path));
 	    }
 	
 	    if (path.startsWith("user-images/")) {
@@ -62,7 +65,7 @@ public final class ImageHandler {
 	
 	
 	
-	public String processImage(String fullPath) {
+	public static String processImage(String fullPath) {
 	    File selectedFile = new File(fullPath);
 
 	    String builtIn = checkBuiltIn(selectedFile);
@@ -106,7 +109,7 @@ public final class ImageHandler {
 	
 	
 	
-	private String checkBuiltIn(File file) {
+	private static String checkBuiltIn(File file) {
 	    try {
 	        String selected = file.getCanonicalPath();
 
@@ -138,7 +141,7 @@ public final class ImageHandler {
 	
 	
 	
-	private String getExtension(String name) {
+	private static String getExtension(String name) {
 	    int i = name.lastIndexOf('.');
 	    return i > 0 ? name.substring(i) : "";
 	    

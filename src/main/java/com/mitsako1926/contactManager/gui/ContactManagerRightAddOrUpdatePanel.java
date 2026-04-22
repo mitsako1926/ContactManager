@@ -25,7 +25,7 @@ import javax.swing.JTextField;
 
 import com.mitsako1926.contactManager.model.Contact;
 import com.mitsako1926.contactManager.service.ContactService;
-import com.mitsako1926.contactManager.service.ImageHandler;
+import com.mitsako1926.contactManager.service.ImageUtils;
 
 public final class ContactManagerRightAddOrUpdatePanel extends JPanel{
 	
@@ -35,9 +35,7 @@ public final class ContactManagerRightAddOrUpdatePanel extends JPanel{
 	private final JTextArea notesArea;
 
 	private ContactService service;
-	
-	private final ImageHandler imageHandler = new ImageHandler();
-	
+		
 	private ImageIcon iconAddUser,iconUpdateUser,iconAdd;
 	
 	private Image imgAddUser,imgUpdateUser,imgAdd;
@@ -300,7 +298,7 @@ public final class ContactManagerRightAddOrUpdatePanel extends JPanel{
 		
 		ImageIcon iconUser = null;
 		
-		iconUser = imageHandler.helperLoadIcon(contact, iconUser);
+		iconUser = ImageUtils.helperLoadIcon(contact, iconUser);
 
         Image scaled = iconUser.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 		
