@@ -17,6 +17,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import com.mitsako1926.contactManager.model.Contact;
+import com.mitsako1926.contactManager.service.ImageHandler;
 
 public final class ContactManagerRightDetailsPanel extends JPanel{
 
@@ -26,6 +27,8 @@ public final class ContactManagerRightDetailsPanel extends JPanel{
 									};
 
 	private final JLabel imageLabel;
+	
+	private final ImageHandler imageHandler = new ImageHandler();
 	
 	private Contact contact;
 	
@@ -127,7 +130,7 @@ public final class ContactManagerRightDetailsPanel extends JPanel{
 		
 		if(contact==null)return;	
 		
-		icon = new ContactListRenderer(1).helperLoadIcon(contact, icon);
+		icon = imageHandler.helperLoadIcon(contact, icon);
 		
         Image imgUser = icon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 		

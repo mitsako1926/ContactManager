@@ -1,21 +1,11 @@
 package com.mitsako1926.contactManager.service;
 
-import java.awt.Component;
-import java.awt.Container;
+
 import java.awt.FileDialog;
 import java.awt.Frame;
-import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import com.mitsako1926.contactManager.dao.ContactDAO;
@@ -32,6 +22,8 @@ public final class ContactService {
 	private final ContactDAO contactDAO = new ContactDAO();
 	
 	private final DialogUtils dialog = new DialogUtils();
+	
+	private final ImageHandler imageHandler = new ImageHandler();
 	
 	private  ContactManagerSideBarPanel sideBarPanel;
 	
@@ -444,126 +436,17 @@ public final class ContactService {
 	    if (file != null) {
 	        String fullPath = dir + file;
 
-	        String relativePath = processImage(fullPath);
+	        String relativePath = imageHandler.processImage(fullPath);
 
 	        selectedImagePath = relativePath;
 
-	        return loadImage(relativePath);
+	        return imageHandler.loadImage(relativePath);
 	    }
 
 	    return null;
 	    
 	}
 	
-	
-	
-	private final Path USER_IMAGES_DIR = Path.of(System.getProperty("user.home"), "ContactManager", "user-images");	
-	
-	
-	
-	public String processImage(String fullPath) {
-	    File selectedFile = new File(fullPath);
-
-	    String builtIn = checkBuiltIn(selectedFile);
-	    if (builtIn != null) {
-	        return builtIn;
-	    }
-
-	    try {
-	        Files.createDirectories(USER_IMAGES_DIR);
-
-	        byte[] bytes = Files.readAllBytes(selectedFile.toPath());
-	        MessageDigest md = MessageDigest.getInstance("SHA-256");
-	        byte[] hashBytes = md.digest(bytes);
-
-	        StringBuilder sb = new StringBuilder();
-	        for (byte b : hashBytes) {
-	            sb.append(String.format("%02x", b));
-	        }
-
-	        String extension = getExtension(selectedFile.getName());
-	        String newName = sb.toString() + extension;
-
-	        Path target = USER_IMAGES_DIR.resolve(newName);
-
-	        if (!Files.exists(target)) {
-	            Files.copy(selectedFile.toPath(), target);
-	        }
-
-	        return "user-images/" + newName;
-
-	    } catch (IOException | NoSuchAlgorithmException e) {
-	        e.printStackTrace();
-	        return null;
-	    }
-	}
-	
-	
-	
-	private String checkBuiltIn(File file) {
-	    try {
-	        String selected = file.getCanonicalPath();
-
-	        String[][] builtIns = {
-	            {"/images/users/woman1.png", "src/main/resources/images/users/woman1.png"},
-	            {"/images/users/woman2.png", "src/main/resources/images/users/woman2.png"},
-	            {"/images/users/man1.png", "src/main/resources/images/users/man1.png"},
-	            {"/images/users/man2.png", "src/main/resources/images/users/man2.png"},
-	            {"/images/users/man3.png", "src/main/resources/images/users/man3.png"},
-	            {"/images/users/user.png", "src/main/resources/images/users/user.png"}
-	        };
-
-	        for (String[] entry : builtIns) {
-	            File f = new File(entry[1]);
-	            if (f.exists() && f.getCanonicalPath().equals(selected)) {
-	                return entry[0];
-	            }
-	        }
-
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	    }
-
-	    return null;
-	    
-	}
-	
-	
-	
-	private String getExtension(String name) {
-	    int i = name.lastIndexOf('.');
-	    return i > 0 ? name.substring(i) : "";
-	    
-	}
-	
-	
-	
-	public ImageIcon loadImage(String path) {
-
-	    if (path.startsWith("/images/")) {
-	        return new ImageIcon(getClass().getResource(path));
-	    }
-
-	    if (path.startsWith("user-images/")) {
-	    	String fileName = path.substring("user-images/".length());
-	        Path p = USER_IMAGES_DIR.resolve(fileName);
-	        return new ImageIcon(p.toString());
-	    }
-
-	    return null;
-	    
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 	
 	
 	
