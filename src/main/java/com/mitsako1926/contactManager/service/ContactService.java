@@ -54,9 +54,15 @@ public final class ContactService {
 	
 	
 	
+	public enum ViewMode{
+		ALL, FAVORITES, SEARCH
+	}
+	
+	
+	
 	public void loadAllContacts(){
 		contacts = contactDAO.getAllContacts();
-		centerPanel.callRefresh();
+		centerPanel.callRefresh(ViewMode.ALL);
 		rightPanel.showEmpty();
 		rightPanel.detailsOfContact(null);
 		rightPanel.resetAddPanel();
@@ -68,7 +74,7 @@ public final class ContactService {
 	
 	public void loadFavoriteContacts(){
 		contacts = contactDAO.getFavoriteContacts();
-		centerPanel.callRefresh();	
+		centerPanel.callRefresh(ViewMode.FAVORITES);	
 		rightPanel.showEmpty();
 		rightPanel.detailsOfContact(null);
 		rightPanel.resetAddPanel();
@@ -149,23 +155,23 @@ public final class ContactService {
 	public void searchContacts(String keyword){
 		if(keyword.isBlank()&&sideBarPanel.getSelectedButton().getText().equals("All Contacts")) {
 			contacts = contactDAO.getAllContacts();
-			centerPanel.callRefresh();
+			centerPanel.callRefresh(ViewMode.ALL);
 			return;
 		}else if(keyword.isBlank()&&sideBarPanel.getSelectedButton().getText().equals("Favorites")) {
 			contacts = contactDAO.getFavoriteContacts();
-			centerPanel.callRefresh();
+			centerPanel.callRefresh(ViewMode.FAVORITES);
 			return;
 		}else if(keyword.isBlank()&&sideBarPanel.getPreviousButton().getText().equals("All Contacts")) {
 			contacts = contactDAO.getAllContacts();
-			centerPanel.callRefresh();
+			centerPanel.callRefresh(ViewMode.ALL);
 			return;
 		}else if(keyword.isBlank()&&sideBarPanel.getPreviousButton().getText().equals("Favorites")){
 			contacts = contactDAO.getFavoriteContacts();
-			centerPanel.callRefresh();
+			centerPanel.callRefresh(ViewMode.FAVORITES);
 			return;
 		}
 		contacts = contactDAO.searchContacts(keyword);
-		centerPanel.callRefresh();
+		centerPanel.callRefresh(ViewMode.SEARCH);
 	}
 	
 	

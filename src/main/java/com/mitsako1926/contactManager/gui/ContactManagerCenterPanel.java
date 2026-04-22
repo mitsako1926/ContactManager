@@ -18,6 +18,7 @@ import javax.swing.ListSelectionModel;
 
 import com.mitsako1926.contactManager.model.Contact;
 import com.mitsako1926.contactManager.service.ContactService;
+import com.mitsako1926.contactManager.service.ContactService.ViewMode;
 
 
 public final class ContactManagerCenterPanel extends JPanel{
@@ -30,6 +31,8 @@ public final class ContactManagerCenterPanel extends JPanel{
 	private final DefaultListModel<Contact> model;
     
 	private final JList<Contact> list;
+	
+	private ViewMode view = ViewMode.ALL;
 	
 	private final JComboBox<String> comboBox;
 	
@@ -86,7 +89,7 @@ public final class ContactManagerCenterPanel extends JPanel{
 		//DATA FOR CONTACTS PANEL
 		model = new DefaultListModel<Contact>();
 		
-		refreshList();
+		refreshList(view);
 		
 		list = new JList<Contact>(model);
 		customizeList(list);
@@ -104,7 +107,7 @@ public final class ContactManagerCenterPanel extends JPanel{
 	
 	
 	
-	private void refreshList() {
+	private void refreshList(ViewMode view) {
 	    Contact previouslySelected = list != null ? list.getSelectedValue() : null;
 
 	    model.clear();
@@ -124,8 +127,22 @@ public final class ContactManagerCenterPanel extends JPanel{
 	        }
 	    	
 	    }
+	    
+	    switch(view) {
+	    	case ALL:
+	    		labelContacts.setText("    All Contacts(" + service.getContacts().size() + ")");
+	    	break;
+	    	
+	    	case FAVORITES:
+	    		labelContacts.setText("    Favorites(" + service.getContacts().size() + ")");
+	    	break;
+	    	
+	    	case SEARCH:
+	    		labelContacts.setText("    Search(" + service.getContacts().size() + ")");
+	    	break;
+	    }
 
-	    labelContacts.setText("    All Contacts(" + service.getContacts().size() + ")");
+	    
 	    
 	}
 	
@@ -178,7 +195,7 @@ public final class ContactManagerCenterPanel extends JPanel{
 		        service.sortFavoritesFirst();
 		    }
 
-		    refreshList();
+		    refreshList(view);
 		    
 		});
 		
@@ -186,8 +203,8 @@ public final class ContactManagerCenterPanel extends JPanel{
 	
 	
 	
-	public void callRefresh() {
-		refreshList();
+	public void callRefresh(ViewMode view) {
+		refreshList(view);
 	}
 	
 	
