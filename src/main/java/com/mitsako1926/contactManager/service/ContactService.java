@@ -82,26 +82,71 @@ public final class ContactService {
 	
 
 	
-//	private void setOriginalButton() {
-//		JButton button = sideBarPanel.getSelectedButton();
-//		JButton previousButton = sideBarPanel.getPreviousButton();
-//		
-//		if(button.getText().equals("All Contacts")) {
-//			sideBarPanel.selectButton(button);
-//			
-//		}else if (sideBarPanel.getSelectedButton().getText().equals("Favorites")) {
-//			sideBarPanel.selectButton(button);
-//			
-//		}else {
-//			if(previousButton.getText().equals("All Contacts")) {
-//				sideBarPanel.selectButton(previousButton);
-//				
-//			}else {
-//				sideBarPanel.selectButton(previousButton);
-//				
-//			}
-//		}
-//	}
+	public void setFavorite() {
+		Contact contactToFavorite = rightPanel.getContact();
+		
+		if(contactToFavorite==null) return;
+		
+		if(!contactToFavorite.equals(centerPanel.getSelectedContact())) {
+			return;
+		}
+				
+		contactDAO.setFavorite(contactToFavorite.getId(), !contactToFavorite.isFavorite());
+		
+		contactToFavorite.setFavorite(!contactToFavorite.isFavorite());
+		
+		getDetails(contactToFavorite);
+		
+	}
+	
+	
+	
+	public ImageIcon setUserIcon() {
+	    FileDialog dialog = new FileDialog((Frame) null, "Select Image", FileDialog.LOAD);
+	    dialog.setVisible(true);
+
+	    String file = dialog.getFile();
+	    String dir = dialog.getDirectory();
+
+	    if (file != null) {
+	        String fullPath = dir + file;
+
+	        String relativePath = imageHandler.processImage(fullPath);
+
+	        selectedImagePath = relativePath;
+
+	        return imageHandler.loadImage(relativePath);
+	    }
+
+	    return null;
+	    
+	}
+	
+	
+	
+	public void deleteContact() {		
+		Contact contactToDelete = rightPanel.getContact();
+		
+		if(contactToDelete==null) return;
+		
+		if(!contactToDelete.equals(centerPanel.getSelectedContact())) {
+			return;
+		}
+				
+		Object selected = dialog.optionPaneDelete(contactToDelete);
+
+		if ("Delete".equals(selected)) {
+		    contactDAO.deleteContact(contactToDelete.getId());
+		    
+		    loadAllContacts();
+		    
+		    sideBarPanel.selectButton(sideBarPanel.getAllContactsButton());
+		    
+		    rightPanel.showEmpty();
+		    rightPanel.detailsOfContact(null);
+		}
+	    
+	}
 	
 	
 	
@@ -160,14 +205,16 @@ public final class ContactService {
 	
 	
 	
-	public void addContact() {
-		rightPanel.detailsOfContact(null);
+	public void getDetails(Contact contact) {
+		rightPanel.showDetails();
+		rightPanel.detailsOfContact(contact);
 		
-		if(centerPanel.getList().getSelectedValue()!=null) {
-			centerPanel.getList().clearSelection();
-		}
-		rightPanel.resetAddPanel();
-		rightPanel.showAdd();
+		JButton previousButton = sideBarPanel.getPreviousButton();
+		JButton selectedButton = sideBarPanel.getSelectedButton();
+		
+		if(previousButton!=null && selectedButton.getText().equals("Add Contact")) {
+			sideBarPanel.selectButton(previousButton);
+		}	
 		
 	}
 	
@@ -242,6 +289,41 @@ public final class ContactService {
 	    }
 	    sideBarPanel.selectButton(sideBarPanel.getAllContactsButton());
 
+	}
+	
+	
+	
+	public void addContact() {
+		rightPanel.detailsOfContact(null);
+		
+		if(centerPanel.getList().getSelectedValue()!=null) {
+			centerPanel.getList().clearSelection();
+		}
+		rightPanel.resetAddPanel();
+		rightPanel.showAdd();
+		
+	}
+	
+	
+	
+	public void updateContact() {
+		Contact contactToUpdate = rightPanel.getContact();
+		
+		if(contactToUpdate==null) return;
+		
+		if(!contactToUpdate.equals(centerPanel.getSelectedContact())) {
+			return;
+		}
+				
+		rightPanel.setAddToUpdatePanel(contactToUpdate);
+		rightPanel.showAdd();
+		
+	}
+	
+	
+	
+	public void resetFilters() {
+		centerPanel.getComboBox().setSelectedIndex(-1);
 	}
 	
 	
@@ -343,112 +425,9 @@ public final class ContactService {
 	}
 	
 	
-	
-	public void getDetails(Contact contact) {
-		rightPanel.showDetails();
-		rightPanel.detailsOfContact(contact);
-		
-		JButton previousButton = sideBarPanel.getPreviousButton();
-		JButton selectedButton = sideBarPanel.getSelectedButton();
-		
-		if(previousButton!=null && selectedButton.getText().equals("Add Contact")) {
-			sideBarPanel.selectButton(previousButton);
-		}	
-		
-	}
-	
-	
-	
-	public void updateContact() {
-		Contact contactToUpdate = rightPanel.getContact();
-		
-		if(contactToUpdate==null) return;
-		
-		if(!contactToUpdate.equals(centerPanel.getSelectedContact())) {
-			return;
-		}
-				
-		rightPanel.setAddToUpdatePanel(contactToUpdate);
-		rightPanel.showAdd();
-		
-	}
-	
-	
-	
-	public void deleteContact() {		
-		Contact contactToDelete = rightPanel.getContact();
-		
-		if(contactToDelete==null) return;
-		
-		if(!contactToDelete.equals(centerPanel.getSelectedContact())) {
-			return;
-		}
-				
-		Object selected = dialog.optionPaneDelete(contactToDelete);
 
-		if ("Delete".equals(selected)) {
-		    contactDAO.deleteContact(contactToDelete.getId());
-		    
-		    loadAllContacts();
-		    
-		    sideBarPanel.selectButton(sideBarPanel.getAllContactsButton());
-		    
-		    rightPanel.showEmpty();
-		    rightPanel.detailsOfContact(null);
-		}
-	    
-	}
-	
-	
-	
-	public void resetFilters() {
-		centerPanel.getComboBox().setSelectedIndex(-1);
-	}
-	
-	
-	
-	public void setFavorite() {
-		Contact contactToFavorite = rightPanel.getContact();
-		
-		if(contactToFavorite==null) return;
-		
-		if(!contactToFavorite.equals(centerPanel.getSelectedContact())) {
-			return;
-		}
-				
-		contactDAO.setFavorite(contactToFavorite.getId(), !contactToFavorite.isFavorite());
-		
-		contactToFavorite.setFavorite(!contactToFavorite.isFavorite());
-		
-		getDetails(contactToFavorite);
-		
-	}
-	
-	
-	
-	public ImageIcon setUserIcon() {
-	    FileDialog dialog = new FileDialog((Frame) null, "Select Image", FileDialog.LOAD);
-	    dialog.setVisible(true);
-
-	    String file = dialog.getFile();
-	    String dir = dialog.getDirectory();
-
-	    if (file != null) {
-	        String fullPath = dir + file;
-
-	        String relativePath = imageHandler.processImage(fullPath);
-
-	        selectedImagePath = relativePath;
-
-	        return imageHandler.loadImage(relativePath);
-	    }
-
-	    return null;
-	    
-	}
-	
-	
 	
 	
 	
 }
+
