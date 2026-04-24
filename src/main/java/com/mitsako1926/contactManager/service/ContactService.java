@@ -427,8 +427,15 @@ public final class ContactService {
 	}
 	
 	
+	
+	public void importContactsFromCSV(){
+		System.out.println("import");
+	}
 
 	
+	public void exportContactsToCSV(){
+		System.out.println("export");
+	}
 	
 	
 }

@@ -9,14 +9,17 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 
 import com.mitsako1926.contactManager.service.ContactService;
@@ -30,6 +33,8 @@ public final class ContactManagerTopPanel extends JPanel{
 										 new ImageIcon(getClass().getResource("/images/icons/bin.png")),
 										 new ImageIcon(getClass().getResource("/images/icons/star.png"))
 										 };
+	
+	JMenuItem exportCsvItem, importCsvItem;
 	
 	private final List<JButton> buttonsList = new ArrayList<JButton>();
 	
@@ -69,16 +74,38 @@ public final class ContactManagerTopPanel extends JPanel{
 		
 		
 		
-		//LABEL
-		JLabel label = new JLabel();
-		label.setPreferredSize(new Dimension(150,50));
-		label.setOpaque(true);
-		label.setBackground(Color.decode("#F7F9FC"));
+		//PANEL FOR FILE BUTTONS
+		JPanel panelFileButtons = new JPanel(new BorderLayout());
+		panelFileButtons.setPreferredSize(new Dimension(150,50));
+		panelFileButtons.setOpaque(true);
+		panelFileButtons.setBackground(Color.decode("#F7F9FC"));
+		panelFileButtons.setBackground(Color.RED);
 		
+		JButton fileButton = new JButton(new ImageIcon(getClass().getResource("/images/icons/list.png")));
+		customizeFileButton(fileButton);
+
+
+		JPopupMenu fileMenu = new JPopupMenu();
+		fileMenu.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.decode("#D6DEE8")));
+
+		importCsvItem = new JMenuItem("Import from CSV");
+		exportCsvItem = new JMenuItem("Export to CSV");
+
+		fileMenu.add(importCsvItem);
+		fileMenu.add(exportCsvItem);
+
+		fileButton.addActionListener(e -> {
+			fileMenu.show(fileButton, fileButton.getWidth(), 0);
+		});
+		
+		importCsvItem.addActionListener(e -> press(e));
+		exportCsvItem.addActionListener(e -> press(e));
+		
+		panelFileButtons.add(fileButton,BorderLayout.WEST);
 		
 		
 		//ADD COMPONENTS TO THE MAIN PANEL
-		add(label,BorderLayout.WEST);
+		add(panelFileButtons,BorderLayout.WEST);
 		add(panelSearch,BorderLayout.CENTER);
 		add(panelButtons,BorderLayout.EAST);
 		
@@ -88,6 +115,14 @@ public final class ContactManagerTopPanel extends JPanel{
 	
 	private void press(ActionEvent e) {
 		
+		//FILE BUTTONS
+		if(e.getSource()==importCsvItem) {
+			service.importContactsFromCSV();
+		}else if(e.getSource()==exportCsvItem) {
+			service.exportContactsToCSV();
+		}
+		
+		//EDIT,DELETE,FAVORITE BUTTONS
 		if(e.getSource()==buttonsList.get(0)) {
 			service.updateContact();
 		}else if(e.getSource()==buttonsList.get(1)) {
@@ -184,16 +219,41 @@ public final class ContactManagerTopPanel extends JPanel{
 	    
 		ImageIcon originalIcon = (ImageIcon) button.getIcon();
 	    Image img = originalIcon.getImage().getScaledInstance(28, 28, Image.SCALE_SMOOTH);
-	    ImageIcon scaledIcon = new ImageIcon(img);
-
 	    
-	    button.setIcon(scaledIcon);
+	    button.setIcon(new ImageIcon(img));
 
 	    buttonsList.add(button);
 	    
 	}
 	
 	
+	
+	private void customizeFileButton(JButton button) {
+		button.setPreferredSize(new Dimension(35, 28));
+		button.setFocusPainted(false);
+		button.setBorderPainted(false);
+		button.setContentAreaFilled(false);
+		button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		button.setFont(new Font("Arial", Font.BOLD, 18));
+		
+		button.addMouseListener(new MouseAdapter() {
+		    @Override
+		    public void mouseEntered(MouseEvent e) {
+		    	button.setBackground(new Color(220,220,220));
+		    }
+
+		    @Override
+		    public void mouseExited(MouseEvent e) {
+		    	button.setBackground(new Color(240,240,240));
+		    }
+		});
+		
+		ImageIcon originalIcon = (ImageIcon) button.getIcon();
+	    Image img = originalIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+	    
+	    button.setIcon(new ImageIcon(img));
+
+	}
 
 	
 	

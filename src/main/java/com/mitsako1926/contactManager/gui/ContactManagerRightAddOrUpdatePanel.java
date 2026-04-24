@@ -128,7 +128,7 @@ public final class ContactManagerRightAddOrUpdatePanel extends JPanel{
 		
 		
 		addOrUpdateButton = new JButton("Add",new ImageIcon(imgAdd));
-		customizeAddButton(addOrUpdateButton);
+		customizeAddOrUpdateButton(addOrUpdateButton);
 		
 		
 		panelAdd.add(addOrUpdateButton);
@@ -247,7 +247,7 @@ public final class ContactManagerRightAddOrUpdatePanel extends JPanel{
 	
 	
 	
-	private void customizeAddButton(JButton button) {
+	private void customizeAddOrUpdateButton(JButton button) {
 		button.setHorizontalAlignment(JButton.LEFT);
 		button.setHorizontalTextPosition(JButton.RIGHT);
 		button.setIconTextGap(10);
