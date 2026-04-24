@@ -139,7 +139,13 @@ public final class ContactManagerRightDetailsPanel extends JPanel{
 		labelList.get(2).setText(labels[2] + contact.getPhone());
 		labelList.get(3).setText(labels[3] + contact.getEmail());
 		labelList.get(4).setText(labels[4] + contact.getCompany());
-		labelList.get(5).setText(labels[5] + contact.isFavorite());
+		
+		if(contact.isFavorite()) {
+			labelList.get(5).setText(labels[5] + "yes");
+		}else {
+			labelList.get(5).setText(labels[5] + "no");
+		}
+		
 		notesArea.setText(contact.getNotes());
 		
 	}

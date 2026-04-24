@@ -222,16 +222,16 @@ public final class ContactService {
 	
 	
 	
-	public void addOrUpdateContactToDB(List<JTextField> list, String notes, String addOrUpdate) {
+	public void addOrUpdateContactToDB(List<JTextField> list, String notes, String addOrUpdate, boolean favorite1) {
 		
 		String firstName = list.get(0).getText().trim();
 	    String lastName  = list.get(1).getText().trim();
 	    String phone     = list.get(2).getText().trim();
 	    String email     = list.get(3).getText().trim();
 	    String company   = list.get(4).getText().trim();
-	    String favorite  = list.get(5).getText().trim();
+	    boolean favorite  = favorite1;
 
-	    String isValid = inputValidation(firstName, lastName, phone, email, company, favorite, addOrUpdate);
+	    String isValid = inputValidation(firstName, lastName, phone, email, company, addOrUpdate);
 	    
 	    if(isValid!=null) {
 	    	DialogUtils.optionPaneInvalid(isValid);	
@@ -245,7 +245,7 @@ public final class ContactService {
 	            email,
 	            company,
 	            notes,
-	            Boolean.parseBoolean(favorite),
+	            favorite,
 	            selectedImagePath
 	    );
 		
@@ -354,7 +354,7 @@ public final class ContactService {
 	
 	
 	
-	private String inputValidation(String firstName, String lastName, String phone, String email, String company, String favorite, String addOrUpdate) {
+	private String inputValidation(String firstName, String lastName, String phone, String email, String company, String addOrUpdate) {
 
 	    if (firstName.isEmpty()) return "First name is required.";
 	    if (lastName.isEmpty()) return "Last name is required.";

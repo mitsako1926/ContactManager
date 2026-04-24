@@ -15,10 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -31,6 +33,10 @@ public final class ContactManagerRightAddOrUpdatePanel extends JPanel{
 	
 	
 	private final JButton imageButton, addOrUpdateButton;
+	
+	private JRadioButton favoriteYesRadio, favoriteNoRadio;
+	
+	private ButtonGroup favoriteGroup;
 	
 	private final JTextArea notesArea;
 
@@ -156,7 +162,9 @@ public final class ContactManagerRightAddOrUpdatePanel extends JPanel{
 			}
 			
 		}else if(e.getSource()==addOrUpdateButton) {
-			service.addOrUpdateContactToDB(new ArrayList<JTextField>(textFieldList), notesArea.getText(), addOrUpdateButton.getText());
+			boolean favorite = favoriteYesRadio.isSelected();
+			
+			service.addOrUpdateContactToDB(new ArrayList<JTextField>(textFieldList), notesArea.getText(), addOrUpdateButton.getText(), favorite);
 		}
 		
 	}
@@ -166,9 +174,11 @@ public final class ContactManagerRightAddOrUpdatePanel extends JPanel{
 	public void setDefaultState() {
 		imageButton.setIcon(new ImageIcon(imgAddUser));
 		
-		textFieldList.forEach((tf)->tf.setText(""));
+		textFieldList.forEach(tf->tf.setText(""));
 		
 		notesArea.setText("");
+		
+		favoriteNoRadio.setSelected(true);
 		
 		addOrUpdateButton.setText("Add");
 		addOrUpdateButton.setIcon(new ImageIcon(imgAdd));
@@ -192,6 +202,29 @@ public final class ContactManagerRightAddOrUpdatePanel extends JPanel{
 		    return row;
 	    }
 
+	    if (text.equals("Favorite")) {
+	        favoriteYesRadio = new JRadioButton("Yes");
+	        favoriteNoRadio = new JRadioButton("No");
+
+	        favoriteYesRadio.setBackground(Color.decode("#F7F9FC"));
+	        favoriteNoRadio.setBackground(Color.decode("#F7F9FC"));
+
+	        favoriteYesRadio.setFocusPainted(false);
+	        favoriteNoRadio.setFocusPainted(false);
+
+	        favoriteGroup = new ButtonGroup();
+	        favoriteGroup.add(favoriteYesRadio);
+	        favoriteGroup.add(favoriteNoRadio);
+
+	        favoriteNoRadio.setSelected(true);
+
+	        row.add(label);
+	        row.add(favoriteYesRadio);
+	        row.add(favoriteNoRadio);
+
+	        return row;
+	    }
+	    
 	    JTextField field = new JTextField(15);
 
 	    textFieldList.add(field);
@@ -309,7 +342,12 @@ public final class ContactManagerRightAddOrUpdatePanel extends JPanel{
 		textFieldList.get(2).setText(contact.getPhone());
 		textFieldList.get(3).setText(contact.getEmail());
 		textFieldList.get(4).setText(contact.getCompany());
-		textFieldList.get(5).setText(String.valueOf(contact.isFavorite()));
+		
+		if (contact.isFavorite()) {
+		    favoriteYesRadio.setSelected(true);
+		} else {
+		    favoriteNoRadio.setSelected(true);
+		}
 		
 		notesArea.setText(contact.getNotes());
 		

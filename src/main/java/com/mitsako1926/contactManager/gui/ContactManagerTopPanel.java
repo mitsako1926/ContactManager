@@ -60,7 +60,7 @@ public final class ContactManagerTopPanel extends JPanel{
 		
 		//PANEL BUTTONS
 		JPanel panelButtons = new JPanel();
-		panelButtons.setLayout(new FlowLayout(FlowLayout.CENTER,10,5));
+		panelButtons.setLayout(new FlowLayout(FlowLayout.CENTER,15,5));
 		panelButtons.setPreferredSize(new Dimension(250,50));
 		panelButtons.setBackground(Color.decode("#F7F9FC"));
 		
