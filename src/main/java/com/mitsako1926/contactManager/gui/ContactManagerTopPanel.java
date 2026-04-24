@@ -79,28 +79,31 @@ public final class ContactManagerTopPanel extends JPanel{
 		panelFileButtons.setPreferredSize(new Dimension(150,50));
 		panelFileButtons.setOpaque(true);
 		panelFileButtons.setBackground(Color.decode("#F7F9FC"));
-		panelFileButtons.setBackground(Color.RED);
+
 		
 		JButton fileButton = new JButton(new ImageIcon(getClass().getResource("/images/icons/list.png")));
 		customizeFileButton(fileButton);
 
 
-		JPopupMenu fileMenu = new JPopupMenu();
-		fileMenu.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.decode("#D6DEE8")));
-
 		importCsvItem = new JMenuItem("Import from CSV");
 		exportCsvItem = new JMenuItem("Export to CSV");
+		importCsvItem.addActionListener(e -> press(e));
+		exportCsvItem.addActionListener(e -> press(e));
+		
+		
+		JPopupMenu fileMenu = new JPopupMenu();
+		fileMenu.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.decode("#D6DEE8")));
 
 		fileMenu.add(importCsvItem);
 		fileMenu.add(exportCsvItem);
 
+		
 		fileButton.addActionListener(e -> {
 			fileMenu.show(fileButton, fileButton.getWidth(), 0);
 		});
 		
-		importCsvItem.addActionListener(e -> press(e));
-		exportCsvItem.addActionListener(e -> press(e));
 		
+		//ADD THE BUTTON THAT HOLDS THE IMPORT/EXPORT BUTTONS 
 		panelFileButtons.add(fileButton,BorderLayout.WEST);
 		
 		

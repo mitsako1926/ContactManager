@@ -3,6 +3,12 @@ package com.mitsako1926.contactManager.service;
 
 import java.awt.FileDialog;
 import java.awt.Frame;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -428,14 +434,126 @@ public final class ContactService {
 	
 	
 	
-	public void importContactsFromCSV(){
-		System.out.println("import");
-	}
+	public void importContactsFromCSV() {
+	    File file = chooseImportFile();
 
-	
-	public void exportContactsToCSV(){
-		System.out.println("export");
+	    if (file == null) return;
+
+	    try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+
+	        String line;
+
+	        reader.readLine();
+
+	        while ((line = reader.readLine()) != null) {
+	            String[] data = line.split(",",-1);
+	            
+	            Contact c = new Contact(
+	                    data[0].trim(),
+	                    data[1].trim(),
+	                    data[2].trim(),
+	                    data[3].trim(),
+	                    data[4].trim(),
+	                    data[6].trim(),
+	                    Boolean.parseBoolean(data[5].trim()),
+	                    data[7].trim()
+	                );
+	            
+	            contactDAO.addContact(c);
+	        }
+
+	    } catch (IOException e) {
+	    	DialogUtils.optionPaneError("Error importing contacts");
+	        e.printStackTrace();
+	        
+	    } catch (Exception e) {
+	        DialogUtils.optionPaneError("Invalid CSV file");
+	        e.printStackTrace();
+	        
+	    }
+	    
+	    loadAllContacts();
+	    
 	}
+	
+	
+	
+	public void exportContactsToCSV() {
+	    File file = chooseExportFile();
+
+	    if (file == null) return;
+
+	    List<Contact> contacts = contactDAO.getAllContacts();
+
+	    try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+
+	        writer.write("First Name,Last Name,Phone,Email,Company,Favorite,Notes,Image Path");
+	        
+	        writer.newLine();
+
+	        for (Contact c : contacts) {
+	            writer.write(
+	                c.getFirstName() + "," +
+	                c.getLastName() + "," +
+	                c.getPhone() + "," +
+	                c.getEmail() + "," +
+	                c.getCompany() + "," +
+	                c.isFavorite() + "," +
+	                c.getNotes() + "," +
+	                c.getImagePath()
+	            );
+	            writer.newLine();
+	        }
+
+	    } catch (IOException e) {
+	    	DialogUtils.optionPaneError("Error exporting contacts");
+	        e.printStackTrace();
+	    }
+	    
+	}
+	
+	
+	
+	public File chooseExportFile() {
+	    FileDialog dialog = new FileDialog((Frame) null, "Export CSV", FileDialog.SAVE);
+	    dialog.setFile("contacts.csv");
+	    dialog.setVisible(true);
+
+	    String file = dialog.getFile();
+	    String dir = dialog.getDirectory();
+
+	    if (file != null) {
+	        String fullPath = dir + file;
+
+	        if (!fullPath.toLowerCase().endsWith(".csv")) {
+	            fullPath += ".csv";
+	        }
+
+	        return new File(fullPath);
+	    }
+
+	    return null;
+	    
+	}
+	
+	
+	
+	public File chooseImportFile() {
+	    FileDialog dialog = new FileDialog((Frame) null, "Import CSV", FileDialog.LOAD);
+	    dialog.setVisible(true);
+
+	    String file = dialog.getFile();
+	    String dir = dialog.getDirectory();
+
+	    if (file != null) {
+	        return new File(dir + file);
+	    }
+
+	    return null;
+	    
+	}
+	
+	
 	
 	
 }

@@ -113,8 +113,6 @@ Use the default MySQL configuration:
 
 ## 📌 Future Improvements
 
-- Export/Import contacts (CSV / JSON)
-
 - Add Filters to the search
 
 - Dark mode 🌙

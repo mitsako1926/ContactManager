@@ -42,6 +42,12 @@ public final class ContactDAO {
 	
 	public void addContact(Contact contact) {
 		
+		if(existsByEmail(contact.getEmail())) {
+			return;
+		}else if(existsByPhone(contact.getPhone())) {
+			return;
+		}
+		
 		String sql = "INSERT INTO contacts (first_name, last_name, phone, email, company, notes, favorite, image_path) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
 	    try (Connection conn = DatabaseConnection.getConnection();
@@ -339,6 +345,10 @@ public final class ContactDAO {
     
     
     public boolean existsByPhone(String phone) {
+    	
+    	if (phone == null || phone.trim().isEmpty()) {
+            return false;
+        }
     			
 		String sql = "Select 1 from contacts where phone = ?";
 		
@@ -364,6 +374,10 @@ public final class ContactDAO {
     
     
     public boolean existsByEmail(String email) {
+    	
+    	if (email == null || email.trim().isEmpty()) {
+            return false;
+        }
     			
 		String sql = "Select 1 from contacts where email = ?";
 		
