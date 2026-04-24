@@ -91,11 +91,11 @@ C:\Users\<your-user>\ContactManager\user-images\
 
 ## ⚠️ Warning
 
-- Make sure your database is running (via WAMP, XAMPP, or similar)
+- Make sure your database is running (via WAMP, or similar)
 - Make sure you have Maven installed (run this at terminal: mvn --version)
 - Import the provided SQL script into your database before running the application
 - Ensure the application is connected to your local MySQL server (localhost)
-- 
+  
 ---
 
 ## SQL SCRIPT
