@@ -29,13 +29,13 @@ A modern desktop Contact Manager application built with Java (Swing), featuring 
 ## 🖼️ UI Preview
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/cf255603-298b-4eba-a908-68786dbc8ad9" width="45%" />
-  <img src="https://github.com/user-attachments/assets/267a7615-a0db-4435-826d-710f8bdd6979" width="45%" />
+  <img src="https://github.com/user-attachments/assets/60de49c2-cf11-418c-aac4-e7f4f36ed259" width="45%" />
+  <img src="https://github.com/user-attachments/assets/5944326f-a1fe-4b35-b6c2-dccae70d15de" width="45%" />
 </p>
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/f315750b-c73a-458d-a7f4-adf002736fa2" width="45%" />
-  <img src="https://github.com/user-attachments/assets/23194aff-2e1c-409d-8c70-e865c0cff5d1" width="45%" />
+  <img src="https://github.com/user-attachments/assets/21ae74af-89d7-46dc-afc2-187ca61fdac7" width="45%" />
+  <img src="https://github.com/user-attachments/assets/3718e73d-120f-4d34-aafd-2d4bb2e23c9a" width="45%" />
 </p>
 
 ---
