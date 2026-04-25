@@ -2,6 +2,7 @@ package com.mitsako1926.contactManager.gui;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Frame;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -9,6 +10,7 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 import com.mitsako1926.contactManager.model.Contact;
+
 
 public final class DialogUtils {
 
@@ -39,6 +41,8 @@ public final class DialogUtils {
 		
 		removeFocus(optionPane);
 
+		dialogLocation(dialog);
+		
 		dialog.setVisible(true);
 		
 	}
@@ -67,6 +71,8 @@ public final class DialogUtils {
 		
 		removeFocus(optionPane);
 
+		dialogLocation(dialog);
+		
 		dialog.setVisible(true);
 		
 	}
@@ -97,9 +103,28 @@ public final class DialogUtils {
 		
 		removeFocus(optionPane);
 
+		dialogLocation(dialog);
+		
 		dialog.setVisible(true);
 
 		return optionPane.getValue();
+		
+	}
+    
+    
+    
+    private static void dialogLocation(JDialog dialog) {
+		Frame contactManagerFrame = null;
+
+		for (Frame frame : Frame.getFrames()) {
+		    if (frame.isShowing() && frame instanceof ContactManagerFrame) {
+		        contactManagerFrame = frame;
+		        break;
+		    }
+		}
+		
+		if(contactManagerFrame!=null) dialog.setLocationRelativeTo(contactManagerFrame);
+		else dialog.setLocationRelativeTo(null);
 		
 	}
     
